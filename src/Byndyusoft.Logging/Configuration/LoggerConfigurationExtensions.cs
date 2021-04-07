@@ -2,7 +2,10 @@
 using Byndyusoft.Logging.Enrichers;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using Serilog.Events;
 using Serilog.Exceptions;
+using Serilog.Formatting.Compact;
+using Serilog.Formatting.Json;
 
 namespace Byndyusoft.Logging.Configuration
 {
@@ -18,14 +21,51 @@ namespace Byndyusoft.Logging.Configuration
                 throw new ArgumentNullException(nameof(configuration));
 
             return loggerConfiguration
+                .UseDefaultEnrichSettings()
+                .UseConsoleWriterSettings()
+                .OverrideDefaultLoggers()
+                .ReadFrom.Configuration(configuration);
+        }
+
+        public static LoggerConfiguration UseDefaultEnrichSettings(
+            this LoggerConfiguration loggerConfiguration)
+        {
+            if (loggerConfiguration == null)
+                throw new ArgumentNullException(nameof(loggerConfiguration));
+
+            return loggerConfiguration
                 .Enrich.WithExceptionDetails()
                 .Enrich.WithServiceName(Environment.GetEnvironmentVariable("SERVICE_NAME"))
                 .Enrich.WithApplicationInformationalVersion()
-                
                 .Enrich.WithMessageTemplateHash()
                 .Enrich.WithLogEventHash()
-                .Enrich.FromLogContext()
-                .ReadFrom.Configuration(configuration);
+                .Enrich.FromLogContext();
+        }
+
+        public static LoggerConfiguration UseConsoleWriterSettings(
+            this LoggerConfiguration loggerConfiguration)
+        {
+            if (loggerConfiguration == null)
+                throw new ArgumentNullException(nameof(loggerConfiguration));
+
+            return loggerConfiguration
+                .WriteTo.Console(new CompactJsonFormatter());
+        }
+
+        public static LoggerConfiguration OverrideDefaultLoggers(
+            this LoggerConfiguration loggerConfiguration,
+            LogEventLevel microsoft = LogEventLevel.Fatal,
+            LogEventLevel system = LogEventLevel.Warning,
+            LogEventLevel microsoftHostingLifetime = LogEventLevel.Information)
+        {
+            if (loggerConfiguration == null)
+                throw new ArgumentNullException(nameof(loggerConfiguration));
+
+            return loggerConfiguration
+                .MinimumLevel.Override("Microsoft", microsoft)
+                .MinimumLevel.Override("System", system)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", microsoftHostingLifetime)
+                .WriteTo.Console(new JsonFormatter());
         }
     }
 }
