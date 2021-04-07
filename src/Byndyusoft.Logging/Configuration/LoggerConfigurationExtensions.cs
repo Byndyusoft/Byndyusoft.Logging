@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
-using Serilog.Formatting.Compact;
 using Serilog.Formatting.Json;
 
 namespace Byndyusoft.Logging.Configuration
@@ -49,7 +48,7 @@ namespace Byndyusoft.Logging.Configuration
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
             return loggerConfiguration
-                .WriteTo.Console(new CompactJsonFormatter());
+                .WriteTo.Console(new JsonFormatter());
         }
 
         public static LoggerConfiguration OverrideDefaultLoggers(
@@ -64,8 +63,18 @@ namespace Byndyusoft.Logging.Configuration
             return loggerConfiguration
                 .MinimumLevel.Override("Microsoft", microsoft)
                 .MinimumLevel.Override("System", system)
-                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", microsoftHostingLifetime)
-                .WriteTo.Console(new JsonFormatter());
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", microsoftHostingLifetime);
+        }
+
+        public static LoggerConfiguration UseFileWriterSettings(
+            this LoggerConfiguration loggerConfiguration)
+        {
+            if (loggerConfiguration == null)
+                throw new ArgumentNullException(nameof(loggerConfiguration));
+
+            return loggerConfiguration
+                .WriteTo.Async(x => x.File(new JsonFormatter(), "./logs/verbose.log"))
+                .WriteTo.Async( x=> x.File(new JsonFormatter(), "./logs/error.log", LogEventLevel.Error));
         }
     }
 }
