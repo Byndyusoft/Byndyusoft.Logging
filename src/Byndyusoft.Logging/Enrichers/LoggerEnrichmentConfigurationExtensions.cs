@@ -58,10 +58,10 @@ namespace Byndyusoft.Logging.Enrichers
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
 
             return enrichmentConfiguration.WithProperty(
-                "ServiceName",
+                "serviceName",
                 string.IsNullOrWhiteSpace(serviceName) == false
                     ? serviceName
-                    : Assembly.GetEntryAssembly().GetName().Name
+                    : Assembly.GetEntryAssembly()?.GetName().Name ?? ""
             );
         }
 

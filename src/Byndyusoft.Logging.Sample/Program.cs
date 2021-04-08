@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Byndyusoft.Logging.Configuration;
+using Serilog;
 
 namespace Byndyusoft.Logging.Sample
 {
@@ -18,6 +20,11 @@ namespace Byndyusoft.Logging.Sample
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseSerilog((context, configuration) => configuration
+                    .UseFileWriterSettings()
+                    .UseDefaultSettings(context.Configuration, "Sample project")
+                    
+                )
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
