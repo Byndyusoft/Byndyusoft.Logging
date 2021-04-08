@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using Serilog;
 using Serilog.Configuration;
@@ -79,6 +83,41 @@ namespace Byndyusoft.Logging.Enrichers
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
 
             return enrichmentConfiguration.With<LogEventHashEnricher>();
+        }
+
+        [ExcludeFromCodeCoverage]
+        public static LoggerConfiguration WithBuildConfiguration(
+            this LoggerEnrichmentConfiguration enrichmentConfiguration)
+        {
+            if (enrichmentConfiguration == null)
+                throw new ArgumentNullException(nameof(enrichmentConfiguration));
+
+            const string buildKeyPrefix = "BUILD_";
+
+            var buildProperties = new Dictionary<string, string>();
+            var variables = Environment.GetEnvironmentVariables();
+            foreach (DictionaryEntry variable in variables)
+            {
+                var property = variable.Key.ToString();
+                if (property.StartsWith(buildKeyPrefix))
+                {
+                    var key = property.Remove(0, buildKeyPrefix.Length);
+                    buildProperties.Add(EnvironmentKeyToCameCase(key), variable.Value.ToString());
+                }
+            }
+
+            return enrichmentConfiguration
+                .WithProperty("build", buildProperties, true);
+        }
+
+        private static readonly TextInfo TextInfo = new CultureInfo("en-US", false).TextInfo;
+
+        private static string EnvironmentKeyToCameCase(string environmentProperty)
+        {
+            var keyParts = environmentProperty.Split(new[] {'_'}, StringSplitOptions.RemoveEmptyEntries)
+                .Select((x, i) => i == 0 ? TextInfo.ToLower(x) : TextInfo.ToTitleCase(x));
+
+            return string.Join("", keyParts);
         }
     }
 }

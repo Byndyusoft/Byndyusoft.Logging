@@ -3,7 +3,6 @@ using Byndyusoft.Logging.Enrichers;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
-using Serilog.Exceptions;
 using Serilog.Formatting.Json;
 
 namespace Byndyusoft.Logging.Configuration
@@ -12,7 +11,8 @@ namespace Byndyusoft.Logging.Configuration
     {
         public static LoggerConfiguration UseDefaultSettings(
             this LoggerConfiguration loggerConfiguration,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            string serviceName)
         {
             if (loggerConfiguration == null)
                 throw new ArgumentNullException(nameof(loggerConfiguration));
@@ -20,24 +20,25 @@ namespace Byndyusoft.Logging.Configuration
                 throw new ArgumentNullException(nameof(configuration));
 
             return loggerConfiguration
-                .UseDefaultEnrichSettings()
+                .UseDefaultEnrichSettings(serviceName)
                 .UseConsoleWriterSettings()
                 .OverrideDefaultLoggers()
                 .ReadFrom.Configuration(configuration);
         }
 
         public static LoggerConfiguration UseDefaultEnrichSettings(
-            this LoggerConfiguration loggerConfiguration)
+            this LoggerConfiguration loggerConfiguration, string serviceName)
         {
             if (loggerConfiguration == null)
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
+            if(serviceName == null)
+                throw new ArgumentNullException(nameof(serviceName));
+
             return loggerConfiguration
-                .Enrich.WithExceptionDetails()
-                .Enrich.WithServiceName(Environment.GetEnvironmentVariable("SERVICE_NAME"))
-                .Enrich.WithApplicationInformationalVersion()
+                .Enrich.WithBuildConfiguration()
+                .Enrich.WithServiceName(serviceName)
                 .Enrich.WithMessageTemplateHash()
-                .Enrich.WithLogEventHash()
                 .Enrich.FromLogContext();
         }
 
