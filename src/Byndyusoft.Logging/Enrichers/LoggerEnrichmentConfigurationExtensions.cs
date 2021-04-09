@@ -66,16 +66,6 @@ namespace Byndyusoft.Logging.Enrichers
         }
 
         [ExcludeFromCodeCoverage]
-        public static LoggerConfiguration WithMessageTemplateHash(
-            this LoggerEnrichmentConfiguration enrichmentConfiguration)
-        {
-            if (enrichmentConfiguration == null)
-                throw new ArgumentNullException(nameof(enrichmentConfiguration));
-
-            return enrichmentConfiguration.With<MessageTemplateHashEnricher>();
-        }
-
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithLogEventHash(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
@@ -118,6 +108,19 @@ namespace Byndyusoft.Logging.Enrichers
                 .Select(x => TextInfo.ToTitleCase(TextInfo.ToLower(x)));
 
             return string.Join("", keyParts);
+        }
+
+        [ExcludeFromCodeCoverage]
+        public static LoggerConfiguration WithEnvironment(
+            this LoggerEnrichmentConfiguration enrichmentConfiguration)
+        {
+            if (enrichmentConfiguration == null)
+                throw new ArgumentNullException(nameof(enrichmentConfiguration));
+
+            return enrichmentConfiguration.WithProperty(
+                "Environment",
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+            );
         }
     }
 }

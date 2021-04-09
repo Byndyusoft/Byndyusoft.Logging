@@ -38,7 +38,7 @@ namespace Byndyusoft.Logging.Configuration
             return loggerConfiguration
                 .Enrich.WithBuildConfiguration()
                 .Enrich.WithServiceName(serviceName)
-                //.Enrich.WithMessageTemplateHash()
+                .Enrich.WithEnvironment()
                 .Enrich.FromLogContext();
         }
 
