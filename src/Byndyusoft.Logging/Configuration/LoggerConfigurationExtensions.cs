@@ -39,6 +39,7 @@ namespace Byndyusoft.Logging.Configuration
                 .Enrich.WithBuildConfiguration()
                 .Enrich.WithServiceName(serviceName)
                 .Enrich.WithEnvironment()
+                .Enrich.WithOpenTracingTraces()
                 .Enrich.FromLogContext();
         }
 
