@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Text;
 using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Compact;
@@ -69,6 +71,18 @@ namespace Byndyusoft.Logging.Formatters
             {
                 output.Write(",\"Exception\":");
                 JsonValueFormatter.WriteQuotedJsonString(logEvent.Exception.ToString(), output);
+
+                var builder = new StringBuilder();
+                for (var exception = logEvent.Exception; exception != null; exception = exception.InnerException)
+                {
+                    builder.AppendLine(exception.GetType().AssemblyQualifiedName);
+                    builder.AppendLine(new StackTrace(exception, false).ToString());
+                }
+
+                output.Write(",\"ExceptionHash\":\"");
+                var errorId = EventIdHash.Compute(builder.ToString());
+                output.Write(errorId.ToString("x8"));
+                output.Write('"');
             }
 
             output.Write(",\"Properties\": {");
@@ -76,13 +90,6 @@ namespace Byndyusoft.Logging.Formatters
             bool isFirstProperty = true;
             foreach (var property in logEvent.Properties)
             {
-                //var name = property.Key;
-                //if (name.Length > 0 && name[0] == '@')
-                //{
-                //    // Escape first '@' by doubling
-                //    name = '@' + name;
-                //}
-
                 if (isFirstProperty)
                 {
                     isFirstProperty = false;

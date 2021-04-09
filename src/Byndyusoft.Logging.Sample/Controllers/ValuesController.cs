@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
@@ -25,6 +26,48 @@ namespace Byndyusoft.Logging.Sample.Controllers
 
             logger.LogInformation("запрошены {@Values}", (object)values);
             return values;
+        }
+
+        // GET: api/<ValuesController>
+        [HttpGet("error")]
+        public IEnumerable<string> GetError()
+        {
+            try
+            {
+                ThrowErrorWithInnerError();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Исключение с сообщением");
+                try
+                {
+                    ThrowErrorWithInnerError();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Должен совпасть хэш ошибки");
+                    throw;
+                }
+            }
+
+            return new []{"Недостижимый код"};
+        }
+
+        public void ThrowError()
+        {
+           throw new NotImplementedException("Скоро сделаем");
+        }
+
+        public void ThrowErrorWithInnerError()
+        {
+            try
+            {
+                ThrowError();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Что-то пошло не так", e);
+            }
         }
 
         // GET api/<ValuesController>/5
