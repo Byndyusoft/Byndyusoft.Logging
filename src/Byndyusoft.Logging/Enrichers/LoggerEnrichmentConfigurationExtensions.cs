@@ -58,7 +58,7 @@ namespace Byndyusoft.Logging.Enrichers
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
 
             return enrichmentConfiguration.WithProperty(
-                "serviceName",
+                "ServiceName",
                 string.IsNullOrWhiteSpace(serviceName) == false
                     ? serviceName
                     : Assembly.GetEntryAssembly()?.GetName().Name ?? ""
@@ -107,7 +107,7 @@ namespace Byndyusoft.Logging.Enrichers
             }
 
             return enrichmentConfiguration
-                .WithProperty("build", buildProperties, true);
+                .WithProperty("Build", buildProperties, true);
         }
 
         private static readonly TextInfo TextInfo = new CultureInfo("en-US", false).TextInfo;
@@ -115,7 +115,7 @@ namespace Byndyusoft.Logging.Enrichers
         private static string EnvironmentKeyToCameCase(string environmentProperty)
         {
             var keyParts = environmentProperty.Split(new[] {'_'}, StringSplitOptions.RemoveEmptyEntries)
-                .Select((x, i) => i == 0 ? TextInfo.ToLower(x) : TextInfo.ToTitleCase(x));
+                .Select(x => TextInfo.ToTitleCase(TextInfo.ToLower(x)));
 
             return string.Join("", keyParts);
         }

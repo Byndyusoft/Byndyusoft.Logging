@@ -1,9 +1,9 @@
 ﻿using System;
 using Byndyusoft.Logging.Enrichers;
+using Byndyusoft.Logging.Formatters;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
-using Serilog.Formatting.Json;
 
 namespace Byndyusoft.Logging.Configuration
 {
@@ -38,7 +38,7 @@ namespace Byndyusoft.Logging.Configuration
             return loggerConfiguration
                 .Enrich.WithBuildConfiguration()
                 .Enrich.WithServiceName(serviceName)
-                .Enrich.WithMessageTemplateHash()
+                //.Enrich.WithMessageTemplateHash()
                 .Enrich.FromLogContext();
         }
 
@@ -49,7 +49,7 @@ namespace Byndyusoft.Logging.Configuration
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
             return loggerConfiguration
-                .WriteTo.Console(new JsonFormatter());
+                .WriteTo.Console(new JsonLoggingFormatter());
         }
 
         public static LoggerConfiguration OverrideDefaultLoggers(
@@ -74,8 +74,8 @@ namespace Byndyusoft.Logging.Configuration
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
             return loggerConfiguration
-                .WriteTo.Async(x => x.File(new JsonFormatter(), "./logs/verbose.log"))
-                .WriteTo.Async( x=> x.File(new JsonFormatter(), "./logs/error.log", LogEventLevel.Error));
+                .WriteTo.Async(x => x.File(new JsonLoggingFormatter(), "./logs/verbose.log"))
+                .WriteTo.Async( x=> x.File(new JsonLoggingFormatter(), "./logs/error.log", LogEventLevel.Error));
         }
     }
 }
