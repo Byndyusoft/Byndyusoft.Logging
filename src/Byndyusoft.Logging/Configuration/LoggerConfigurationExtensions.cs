@@ -12,7 +12,8 @@ namespace Byndyusoft.Logging.Configuration
         public static LoggerConfiguration UseDefaultSettings(
             this LoggerConfiguration loggerConfiguration,
             IConfiguration configuration,
-            string serviceName)
+            string serviceName,
+            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose)
         {
             if (loggerConfiguration == null)
                 throw new ArgumentNullException(nameof(loggerConfiguration));
@@ -21,7 +22,7 @@ namespace Byndyusoft.Logging.Configuration
 
             return loggerConfiguration
                 .UseDefaultEnrichSettings(serviceName)
-                .UseConsoleWriterSettings()
+                .UseConsoleWriterSettings(restrictedToMinimumLevel)
                 .OverrideDefaultLoggers()
                 .ReadFrom.Configuration(configuration);
         }
@@ -43,13 +44,14 @@ namespace Byndyusoft.Logging.Configuration
         }
 
         public static LoggerConfiguration UseConsoleWriterSettings(
-            this LoggerConfiguration loggerConfiguration)
+            this LoggerConfiguration loggerConfiguration,
+            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose)
         {
             if (loggerConfiguration == null)
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
             return loggerConfiguration
-                .WriteTo.Console(new JsonLoggingFormatter());
+                .WriteTo.Console(new JsonLoggingFormatter(), restrictedToMinimumLevel);
         }
 
         public static LoggerConfiguration OverrideDefaultLoggers(
@@ -76,6 +78,16 @@ namespace Byndyusoft.Logging.Configuration
             return loggerConfiguration
                 .WriteTo.Async(x => x.File(new JsonLoggingFormatter(), "./logs/verbose.log"))
                 .WriteTo.Async( x=> x.File(new JsonLoggingFormatter(), "./logs/error.log", LogEventLevel.Error));
+        }
+
+        public static LoggerConfiguration UseOpenTracingTraces(
+            this LoggerConfiguration loggerConfiguration)
+        {
+            if (loggerConfiguration == null)
+                throw new ArgumentNullException(nameof(loggerConfiguration));
+
+            return loggerConfiguration
+                .Enrich.WithOpenTracingTraces();
         }
     }
 }

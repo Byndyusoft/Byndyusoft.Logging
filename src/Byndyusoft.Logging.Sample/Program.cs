@@ -16,7 +16,7 @@ namespace Byndyusoft.Logging.Sample
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseSerilog((context, configuration) => configuration
-                    .Enrich.WithOpenTracingTraces()
+                    .UseOpenTracingTraces()
                     .UseFileWriterSettings()
                     .UseDefaultSettings(context.Configuration, "Sample project")
                 )
