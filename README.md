@@ -72,6 +72,23 @@ logger.LogInformation("запрошены {@Values}", (object)values);
 "ConnectionId": "0HM7RB4OJU2MI",
 ```
 
+В случе логирования исключения, добавляет информация об исключении (ToString()) и хэш стектрейса для поиска аналогичных исключений. Хэш считается без учёта номеров строк.
+
+```
+logger.LogError(ex, "Должен совпасть хэш ошибки")
+
+{
+    "Timestamp":"2021-04-09T10:10:16.6873034Z",
+    "Message":"Должен совпасть хэш ошибки",
+    "MessageTemplateHash":"3e4763a9",
+    "Level":"Error",
+    "Exception":"System.Exception: Что-то пошло не так\r\n ---> System.NotImplementedException: Скоро сделаем\r\n   at Byndyusoft.Logging.Sample.Controllers.ValuesController.ThrowError() in C:\\work\\reps\\Byndyusoft.Logging\\src\\Byndyusoft.Logging.Sample\\Controllers\\ValuesController.cs:line 58\r\n   at Byndyusoft.Logging.Sample.Controllers.ValuesController.ThrowErrorWithInnerError() in C:\\work\\reps\\Byndyusoft.Logging\\src\\Byndyusoft.Logging.Sample\\Controllers\\ValuesController.cs:line 65\r\n   --- End of inner exception stack trace ---\r\n   at Byndyusoft.Logging.Sample.Controllers.ValuesController.ThrowErrorWithInnerError() in C:\\work\\reps\\Byndyusoft.Logging\\src\\Byndyusoft.Logging.Sample\\Controllers\\ValuesController.cs:line 69\r\n   at Byndyusoft.Logging.Sample.Controllers.ValuesController.GetError() in C:\\work\\reps\\Byndyusoft.Logging\\src\\Byndyusoft.Logging.Sample\\Controllers\\ValuesController.cs:line 44",
+    "ExceptionHash":"533f548e",
+    ...
+}
+
+```
+
 # Предусмотренные сценарии
 
 ## Как добавить вывод в файл?

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Byndyusoft.Logging.Configuration;
-using Byndyusoft.Logging.Enrichers;
 using Serilog;
 
 namespace Byndyusoft.Logging.Sample
