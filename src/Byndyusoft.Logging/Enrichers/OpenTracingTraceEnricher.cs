@@ -15,8 +15,8 @@ namespace Byndyusoft.Logging.Enrichers
             {
                 return;
             }
-            logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("OtTraceId", activeSpan.Context.TraceId));
-            logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("OtSpanId", activeSpan.Context.SpanId));
+            logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("TraceId", activeSpan.Context.TraceId));
+            logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("SpanId", activeSpan.Context.SpanId));
         }
     }
 }
