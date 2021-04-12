@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Jaeger.Reporters;
+using Jaeger.Samplers;
+using Microsoft.Extensions.Logging;
+using OpenTracing;
+using OpenTracing.Util;
+using Tracer = Jaeger.Tracer;
 
 namespace Byndyusoft.Logging.Sample
 {
@@ -17,6 +18,27 @@ namespace Byndyusoft.Logging.Sample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSingleton<ITracer>(serviceProvider =>
+            {
+                ILoggerFactory loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+
+                ISampler sampler = new ConstSampler(sample: true);
+
+                var reporter = new NoopReporter();
+
+                ITracer tracer = new Tracer.Builder("sample service")
+                    .WithReporter(reporter)
+                    .WithLoggerFactory(loggerFactory)
+                    .WithSampler(sampler)
+                    .Build();
+
+                GlobalTracer.RegisterIfAbsent(tracer);
+
+                return tracer;
+            });
+
+            services.AddOpenTracing();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
