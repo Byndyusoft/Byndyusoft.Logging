@@ -1,2 +1,134 @@
 # Byndyusoft.Logging
-Структурные логи в json формате
+
+Структурные логи в json формате.
+
+Библиотека является набором пресетов для Serilog, которые позволяют добавлять поддержку логирования в несколько строк.
+
+```
+using Byndyusoft.Logging.Configuration;
+using Serilog;
+
+...
+
+Host.CreateDefaultBuilder(args)
+    .UseSerilog((context, configuration) => configuration
+        .UseDefaultSettings(context.Configuration, "Sample project")
+    )
+
+```
+
+В результате такого подключения будут добавлено логирование в стандартный вывод логов в формате json. Каждый вывод в лог производится с новой строки и занимает 1 строку.
+
+Например, для тестового вывода будет, будет получен следущей лог:
+
+```
+var values = new[] {"value1", "value2"};
+logger.LogInformation("запрошены {@Values}", (object)values);
+
+Вывод (отформатированный):
+{
+	"Timestamp": "2021-04-09T13:12:58.2633978Z",
+	"Message": "запрошены [\"value1\", \"value2\"]",
+	"MessageTemplateHash": "05114bc8",
+	"Level": "Information",
+	"Properties": {
+		"Values": [
+			"value1",
+			"value2"
+		],
+    	"Build": {
+			"Commit": "b231ea7",
+			"Branch": "234-sample-project-logger"
+		},
+		"ServiceName": "Sample project",
+		"Environment": "Development"
+	}
+}
+```
+
+Где:
+
+- `Timestamp` — время в utc в которое создана запись лога
+- `Message` — залогированное сообщение с подставленными параметрами
+- `MessageTemplateHash` — хэш шаблона сообщения, который не зависит от параметров
+- `Level` — уровень лога
+- `Properties.*` — все остальные свойства сообщения
+- `Values` — параметры сообщения
+- `Build.*` — параметры извлечённые из переменных окружения `BUILD_BRANCH` и `BUILD_COMMIT`. Поддерживает любые названия по маске `BUILD_*`
+- `ServiceName` — название сервиса, задаётся в конфигурации
+- `Environment` — значение переменной окружения `ASPNETCORE_ENVIRONMENT`
+
+Кроме того `Properties.*` обогащается полями добавленными в контекст лога. Т.е. если вызывать `logger.LogInformation("запрошены {@Values}", (object)values)` из метода контроллера, то в `Properties` добавятся следующие поля, которые добавляет инфраструктура asp.net
+
+```
+"SourceContext": "Byndyusoft.Logging.Sample.Controllers.ValuesController",
+"ActionId": "21eb782a-3717-4616-9927-7d2a5a23c8b8",
+"ActionName": "Byndyusoft.Logging.Sample.Controllers.ValuesController.Get (Byndyusoft.Logging.Sample)",
+"RequestId": "0HM7RB4OJU2MI:00000001",
+"RequestPath": "/api/values",
+"SpanId": "|b01373be-4fffa4bff3ac61ea.",
+"TraceId": "b01373be-4fffa4bff3ac61ea",
+"ParentId": "",
+"ConnectionId": "0HM7RB4OJU2MI",
+```
+
+В случе логирования исключения, добавляет информация об исключении (ToString()) и хэш стектрейса для поиска аналогичных исключений. Хэш считается без учёта номеров строк.
+
+```
+logger.LogError(ex, "Должен совпасть хэш ошибки")
+
+{
+    "Timestamp":"2021-04-09T10:10:16.6873034Z",
+    "Message":"Должен совпасть хэш ошибки",
+    "MessageTemplateHash":"3e4763a9",
+    "Level":"Error",
+    "Exception":"System.Exception: Что-то пошло не так\r\n ---> System.NotImplementedException: Скоро сделаем\r\n   at Byndyusoft.Logging.Sample.Controllers.ValuesController.ThrowError() in C:\\work\\reps\\Byndyusoft.Logging\\src\\Byndyusoft.Logging.Sample\\Controllers\\ValuesController.cs:line 58\r\n   at Byndyusoft.Logging.Sample.Controllers.ValuesController.ThrowErrorWithInnerError() in C:\\work\\reps\\Byndyusoft.Logging\\src\\Byndyusoft.Logging.Sample\\Controllers\\ValuesController.cs:line 65\r\n   --- End of inner exception stack trace ---\r\n   at Byndyusoft.Logging.Sample.Controllers.ValuesController.ThrowErrorWithInnerError() in C:\\work\\reps\\Byndyusoft.Logging\\src\\Byndyusoft.Logging.Sample\\Controllers\\ValuesController.cs:line 69\r\n   at Byndyusoft.Logging.Sample.Controllers.ValuesController.GetError() in C:\\work\\reps\\Byndyusoft.Logging\\src\\Byndyusoft.Logging.Sample\\Controllers\\ValuesController.cs:line 44",
+    "ExceptionHash":"533f548e",
+    ...
+}
+
+```
+
+# Предусмотренные сценарии
+
+## Как добавить вывод в файл?
+
+```
+.UseSerilog((context, configuration) => configuration
+    .UseFileWriterSettings()
+```
+
+В рабочей паке будут добавлены 2 файла `logs/verbose.log` и `error.log`
+
+## Как изменить уровень логирования на проде?
+
+Это просто Serilog. Поэтому в ваших настройках должен быть параметр `Serilog:MinimumLevel:Default` с желаемым уровнем логирования. В переменных окружения `:` нужно заменить на `__`: `Serilog__MinimumLevel__Default`.
+
+## У меня OpenTracing, я хочу его TraceId вместо стандартного
+
+```
+.UseSerilog((context, configuration) => configuration
+    .UseOpenTracingTraces()
+```
+
+Заменяет значения `TraceId` и `SpanId` на полученные от OpenTracing. `ParentId` совсем удаляет.
+
+## Мне не подходят стандартные настройки
+
+Помните, что это всё ещё обычный Serilog. Вы можете изменить настройки так, как вам нравится. Скажем `UseDefaultSettings` представляет из себя следующей вызов:
+
+```
+return loggerConfiguration
+    .UseDefaultEnrichSettings(serviceName)
+    .UseConsoleWriterSettings(restrictedToMinimumLevel)
+    .OverrideDefaultLoggers()
+    .ReadFrom.Configuration(configuration)
+```
+
+Можно использовать только те его части, которые подходят вашему проекту.
+
+# Установка
+
+TODO
+
+#
