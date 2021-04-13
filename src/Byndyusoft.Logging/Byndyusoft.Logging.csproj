@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Byndyusoft.Logging</PackageId>
+    <RootNamespace>Byndyusoft.Logging</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
