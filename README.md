@@ -1,4 +1,4 @@
-# Byndyusoft.Logging
+# Byndyusoft.Logging [![Nuget](https://img.shields.io/nuget/v/Byndyusoft.Logging.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging/) [![Downloads](https://img.shields.io/nuget/dt/Byndyusoft.Logging.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging/)
 
 Структурные логи в json формате.
 
@@ -126,9 +126,3 @@ return loggerConfiguration
 ```
 
 Можно использовать только те его части, которые подходят вашему проекту.
-
-# Установка
-
-TODO
-
-#
