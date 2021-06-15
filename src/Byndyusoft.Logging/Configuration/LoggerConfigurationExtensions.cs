@@ -56,7 +56,7 @@ namespace Byndyusoft.Logging.Configuration
 
         public static LoggerConfiguration OverrideDefaultLoggers(
             this LoggerConfiguration loggerConfiguration,
-            LogEventLevel microsoft = LogEventLevel.Fatal,
+            LogEventLevel microsoft = LogEventLevel.Error,
             LogEventLevel system = LogEventLevel.Warning,
             LogEventLevel microsoftHostingLifetime = LogEventLevel.Information)
         {
