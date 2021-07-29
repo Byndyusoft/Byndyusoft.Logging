@@ -22,7 +22,7 @@ namespace Byndyusoft.Logging.Enrichers
             if(string.IsNullOrWhiteSpace(versionString))
                 throw new ArgumentNullException(nameof(versionString));
 
-            return enrichmentConfiguration.WithProperty("Version", versionString);
+            return enrichmentConfiguration.WithProperty(LoggingPropertyNames.Version, versionString);
         }
 
         [ExcludeFromCodeCoverage]
@@ -58,7 +58,7 @@ namespace Byndyusoft.Logging.Enrichers
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
 
             return enrichmentConfiguration.WithProperty(
-                "ServiceName",
+                LoggingPropertyNames.ServiceName,
                 string.IsNullOrWhiteSpace(serviceName) == false
                     ? serviceName
                     : Assembly.GetEntryAssembly()?.GetName().Name ?? ""
@@ -97,7 +97,7 @@ namespace Byndyusoft.Logging.Enrichers
             }
 
             return enrichmentConfiguration
-                .WithProperty("Build", buildProperties, true);
+                .WithProperty(LoggingPropertyNames.Build, buildProperties, true);
         }
 
         private static readonly TextInfo TextInfo = new CultureInfo("en-US", false).TextInfo;
@@ -118,7 +118,7 @@ namespace Byndyusoft.Logging.Enrichers
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
 
             return enrichmentConfiguration.WithProperty(
-                "Environment",
+                LoggingPropertyNames.Environment,
                 Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
             );
         }
