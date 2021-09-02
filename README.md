@@ -113,6 +113,15 @@ logger.LogError(ex, "Должен совпасть хэш ошибки")
 
 Заменяет значения `TraceId` и `SpanId` на полученные от OpenTracing. `ParentId` совсем удаляет.
 
+## У меня OpenTracing, я хочу логировать в трасы
+
+```
+.UseSerilog((context, configuration) => configuration
+    .WriteToOpenTracing()
+```
+
+Всё что пишется в логи, окажется в трасах.
+
 ## Мне не подходят стандартные настройки
 
 Помните, что это всё ещё обычный Serilog. Вы можете изменить настройки так, как вам нравится. Скажем `UseDefaultSettings` представляет из себя следующей вызов:

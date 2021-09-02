@@ -18,6 +18,7 @@ namespace Byndyusoft.Logging.Sample
                     .UseOpenTracingTraces()
                     .UseFileWriterSettings()
                     .UseDefaultSettings(context.Configuration, "Sample project")
+                    .WriteToOpenTracing()
                 )
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

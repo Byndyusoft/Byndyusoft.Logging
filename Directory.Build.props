@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <RootNamespace>Byndyusoft.Logging</RootNamespace>
     <Authors>Byndyusoft</Authors>
     <PackageTags>Byndyusoft;Logging;Serilog</PackageTags>
