@@ -1,7 +1,9 @@
 ﻿using System;
 using Byndyusoft.Logging.Enrichers;
 using Byndyusoft.Logging.Formatters;
+using Byndyusoft.Logging.Sinks;
 using Microsoft.Extensions.Configuration;
+using OpenTracing.Util;
 using Serilog;
 using Serilog.Events;
 
@@ -88,6 +90,16 @@ namespace Byndyusoft.Logging.Configuration
 
             return loggerConfiguration
                 .Enrich.WithOpenTracingTraces();
+        }
+
+        public static LoggerConfiguration WriteToOpenTracing(this LoggerConfiguration loggerConfiguration,
+            IFormatProvider formatProvider = null)
+        {
+            if (loggerConfiguration == null)
+                throw new ArgumentNullException(nameof(loggerConfiguration));
+
+            return loggerConfiguration
+                .WriteTo.Sink(new OpenTracingSink(GlobalTracer.Instance, formatProvider));
         }
     }
 }
