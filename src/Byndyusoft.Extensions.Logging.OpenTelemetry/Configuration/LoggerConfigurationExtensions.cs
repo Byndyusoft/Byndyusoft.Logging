@@ -1,7 +1,6 @@
 ﻿using System;
 using Byndyusoft.Logging.Enrichers;
 using Byndyusoft.Logging.Sinks;
-using OpenTracing.Util;
 using Serilog;
 
 namespace Byndyusoft.Logging.Configuration
@@ -18,7 +17,7 @@ namespace Byndyusoft.Logging.Configuration
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
             return loggerConfiguration
-                .Enrich.WithOpenTracingTraces();
+                .Enrich.WithOpenTelemetryTraces();
         }
 
         /// <summary>
@@ -31,7 +30,7 @@ namespace Byndyusoft.Logging.Configuration
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
             return loggerConfiguration
-                .WriteTo.Sink(new OpenTracingSink(GlobalTracer.Instance, formatProvider));
+                .WriteTo.Sink(new OpenTelemetrySink(formatProvider));
         }
     }
 }
