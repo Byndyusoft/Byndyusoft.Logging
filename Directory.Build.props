@@ -4,7 +4,7 @@
     <RootNamespace>Byndyusoft.Logging</RootNamespace>
     <Authors>Byndyusoft</Authors>
     <PackageTags>Byndyusoft;Logging;Serilog</PackageTags>
-	<RepositoryUrl>https://github.com/Byndyusoft/Byndyusoft.Logging</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Byndyusoft/Byndyusoft.Logging</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 </Project>

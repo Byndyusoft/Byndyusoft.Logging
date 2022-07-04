@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Byndyusoft.Extensions.Logging.OpenTelemetry\Byndyusoft.Extensions.Logging.OpenTelemetry.csproj" />
-    <ProjectReference Include="..\Byndyusoft.Extensions.Logging.OpenTracing\Byndyusoft.Extensions.Logging.OpenTracing.csproj" />
+    <ProjectReference Include="..\Byndyusoft.Logging.OpenTelemetry\Byndyusoft.Logging.OpenTelemetry.csproj" />
+    <ProjectReference Include="..\Byndyusoft.Logging.OpenTracing\Byndyusoft.Logging.OpenTracing.csproj" />
     <ProjectReference Include="..\Byndyusoft.Logging\Byndyusoft.Logging.csproj" />
   </ItemGroup>
 
