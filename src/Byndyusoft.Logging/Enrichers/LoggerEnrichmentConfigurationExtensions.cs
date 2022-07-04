@@ -66,16 +66,6 @@ namespace Byndyusoft.Logging.Enrichers
         }
 
         [ExcludeFromCodeCoverage]
-        public static LoggerConfiguration WithOpenTracingTraces(
-            this LoggerEnrichmentConfiguration enrichmentConfiguration)
-        {
-            if (enrichmentConfiguration == null)
-                throw new ArgumentNullException(nameof(enrichmentConfiguration));
-
-            return enrichmentConfiguration.With<OpenTracingTraceEnricher>();
-        }
-
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithBuildConfiguration(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
