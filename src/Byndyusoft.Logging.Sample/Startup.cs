@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Jaeger.Reporters;
 using Jaeger.Samplers;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry.Trace;
 using OpenTracing;
 using OpenTracing.Util;
 using Tracer = Jaeger.Tracer;
@@ -39,6 +40,13 @@ namespace Byndyusoft.Logging.Sample
             });
 
             services.AddOpenTracing();
+
+            services.AddOpenTelemetryTracing(tracerProviderBuilder =>
+                tracerProviderBuilder
+                    .AddConsoleExporter()
+                    .AddAspNetCoreInstrumentation()
+                    .AddSource("SampleApp")
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

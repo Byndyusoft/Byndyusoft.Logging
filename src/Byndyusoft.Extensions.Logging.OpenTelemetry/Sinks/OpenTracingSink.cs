@@ -16,7 +16,7 @@ namespace Byndyusoft.Logging.Sinks
     {
         private readonly IFormatProvider _formatProvider;
 
-        public OpenTelemetrySink(IFormatProvider? formatProvider = null)
+        public OpenTelemetrySink(IFormatProvider formatProvider = null)
         {
             _formatProvider = formatProvider;
         }
@@ -34,7 +34,7 @@ namespace Byndyusoft.Logging.Sinks
             {
                 var renderMessage = logEvent.RenderMessage(_formatProvider);
 
-                var fields = new Dictionary<string, object?>
+                var fields = new Dictionary<string, object>
                 {
                     ["event"] = logEvent.MessageTemplate.Text,
                     ["level"] = logEvent.Level.ToString(),
@@ -61,7 +61,7 @@ namespace Byndyusoft.Logging.Sinks
             }
             catch (Exception logException)
             {
-                var fields = new Dictionary<string, object?>
+                var fields = new Dictionary<string, object>
                 {
                     ["event"] = "Logging error",
                     ["logging.error"] = logException.ToString()

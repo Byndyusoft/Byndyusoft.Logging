@@ -6,10 +6,14 @@
 
   <ItemGroup>
     <PackageReference Include="Jaeger" Version="0.4.3" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.3.0" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc9.4" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.4" />
     <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.7.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Byndyusoft.Extensions.Logging.OpenTelemetry\Byndyusoft.Extensions.Logging.OpenTelemetry.csproj" />
     <ProjectReference Include="..\Byndyusoft.Extensions.Logging.OpenTracing\Byndyusoft.Extensions.Logging.OpenTracing.csproj" />
     <ProjectReference Include="..\Byndyusoft.Logging\Byndyusoft.Logging.csproj" />
   </ItemGroup>

@@ -15,10 +15,10 @@ namespace Byndyusoft.Logging.Sample
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseSerilog((context, configuration) => configuration
-                    .UseOpenTracingTraces()
+                    .UseOpenTelemetryTraces()
                     .UseFileWriterSettings()
                     .UseDefaultSettings(context.Configuration, "Sample project")
-                    .WriteToOpenTracing()
+                    .WriteToOpenTelemetry()
                 )
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
