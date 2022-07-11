@@ -89,6 +89,43 @@ logger.LogError(ex, "Должен совпасть хэш ошибки")
 
 ```
 
+# Поддержка трассировки
+
+## OpenTracing
+
+Можно заменить значения `TraceId` и `SpanId` на полученные от OpenTracing. `ParentId` совсем удаляет.
+
+```
+.UseSerilog((context, configuration) => configuration
+    .UseOpenTracingTraces()
+```
+
+
+Можно сделать так, чтобы всё что пишется в логи, оказалось в трасах.
+
+```
+.UseSerilog((context, configuration) => configuration
+    .WriteToOpenTracing()
+```
+
+## OpenTelemetry
+
+Можно заменить значения `TraceId` и `SpanId` на полученные от OpenTelemetry. `ParentId` совсем удаляет.
+
+```
+.UseSerilog((context, configuration) => configuration
+    .UseOpenTelemetryTraces()
+```
+
+
+Можно сделать так, чтобы всё что пишется в логи, оказалось в трасах.
+
+```
+.UseSerilog((context, configuration) => configuration
+    .WriteToOpenTelemetry()
+```
+
+
 # Предусмотренные сценарии
 
 ## Как добавить вывод в файл?
@@ -103,24 +140,6 @@ logger.LogError(ex, "Должен совпасть хэш ошибки")
 ## Как изменить уровень логирования на проде?
 
 Это просто Serilog. Поэтому в ваших настройках должен быть параметр `Serilog:MinimumLevel:Default` с желаемым уровнем логирования. В переменных окружения `:` нужно заменить на `__`: `Serilog__MinimumLevel__Default`.
-
-## У меня OpenTracing, я хочу его TraceId вместо стандартного
-
-```
-.UseSerilog((context, configuration) => configuration
-    .UseOpenTracingTraces()
-```
-
-Заменяет значения `TraceId` и `SpanId` на полученные от OpenTracing. `ParentId` совсем удаляет.
-
-## У меня OpenTracing, я хочу логировать в трасы
-
-```
-.UseSerilog((context, configuration) => configuration
-    .WriteToOpenTracing()
-```
-
-Всё что пишется в логи, окажется в трасах.
 
 ## Мне не подходят стандартные настройки
 
