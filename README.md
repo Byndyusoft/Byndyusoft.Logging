@@ -91,7 +91,9 @@ logger.LogError(ex, "Должен совпасть хэш ошибки")
 
 # Поддержка трассировки
 
-## OpenTracing
+## OpenTracing [![Nuget](https://img.shields.io/nuget/v/Byndyusoft.Logging.OpenTracing.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTracing/) [![Downloads](https://img.shields.io/nuget/dt/Byndyusoft.Logging.OpenTracing.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTracing/)
+
+Сначала нужно подключить `Byndyusoft.Logging.OpenTracing`
 
 Можно заменить значения `TraceId` и `SpanId` на полученные от OpenTracing. `ParentId` совсем удаляет.
 
@@ -108,7 +110,9 @@ logger.LogError(ex, "Должен совпасть хэш ошибки")
     .WriteToOpenTracing()
 ```
 
-## OpenTelemetry
+## OpenTelemetry [![Nuget](https://img.shields.io/nuget/v/Byndyusoft.Logging.OpenTelemetry.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry/) [![Downloads](https://img.shields.io/nuget/dt/Byndyusoft.Logging.OpenTelemetry.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry/)
+
+Сначала нужно подключить `Byndyusoft.Logging.OpenTelemetry`
 
 Можно заменить значения `TraceId` и `SpanId` на полученные от OpenTelemetry. `ParentId` совсем удаляет.
 
