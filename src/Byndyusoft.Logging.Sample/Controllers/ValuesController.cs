@@ -22,7 +22,7 @@ namespace Byndyusoft.Logging.Sample.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            var values = new[] {"value1", "value2"};
+            var values = new[] { "value1", "value2" };
 
             logger.LogInformation("запрошены {@Values}", (object)values);
             return values;
@@ -50,12 +50,12 @@ namespace Byndyusoft.Logging.Sample.Controllers
                 }
             }
 
-            return new []{"Недостижимый код"};
+            return new[] { "Недостижимый код" };
         }
 
         public void ThrowError()
         {
-           throw new NotImplementedException("Скоро сделаем");
+            throw new NotImplementedException("Скоро сделаем");
         }
 
         public void ThrowErrorWithInnerError()

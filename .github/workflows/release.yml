@@ -27,7 +27,28 @@ jobs:
       - name: test
         run: dotnet test
         
-      - name: publish
+      - name: publish Byndyusoft.Logging.OpenTracing
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Byndyusoft.Logging.OpenTracing/Byndyusoft.Logging.OpenTracing.csproj
+          VERSION_FILE_PATH: Directory.Build.props
+          VERSION_REGEX: ^\s*<Version>(.*)<\/Version>\s*$
+          TAG_COMMIT: false
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          INCLUDE_SYMBOLS: true
+     
+      - name: publish Byndyusoft.Logging.OpenTelemetry
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Byndyusoft.Logging.OpenTelemetry/Byndyusoft.Logging.OpenTelemetry.csproj
+          VERSION_FILE_PATH: Directory.Build.props
+          VERSION_REGEX: ^\s*<Version>(.*)<\/Version>\s*$
+          TAG_COMMIT: false
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          INCLUDE_SYMBOLS: true
+
+     
+      - name: publish Byndyusoft.Logging
         uses: rohith/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/Byndyusoft.Logging/Byndyusoft.Logging.csproj

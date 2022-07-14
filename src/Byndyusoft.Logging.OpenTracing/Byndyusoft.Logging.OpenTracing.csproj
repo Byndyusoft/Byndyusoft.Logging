@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<PackageId>Byndyusoft.Logging.OpenTracing</PackageId>
+		<RootNamespace>Byndyusoft.Logging</RootNamespace>
+		<PackageTags>Byndyusoft;Logging;Serilog;OpenTracing</PackageTags>
+		<Description>OpenTracing support for Byndyusoft.Logging library</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="OpenTracing" Version="0.12.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Byndyusoft.Logging\Byndyusoft.Logging.csproj" />
+	</ItemGroup>
+
+</Project>

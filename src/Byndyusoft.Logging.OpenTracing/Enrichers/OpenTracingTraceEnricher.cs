@@ -12,9 +12,8 @@ namespace Byndyusoft.Logging.Enrichers
 
             var activeSpan = tracer?.ActiveSpan;
             if (activeSpan == null)
-            {
                 return;
-            }
+
             logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("TraceId", activeSpan.Context.TraceId));
             logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("SpanId", activeSpan.Context.SpanId));
             logEvent.RemovePropertyIfPresent("ParentId");
