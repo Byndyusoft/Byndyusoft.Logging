@@ -47,7 +47,9 @@ namespace Byndyusoft.Logging.Sinks
                     fields[LogFields.ErrorObject] = logEvent.Exception;
                 }
 
-                var propertyNames = logEvent.MessageTemplate.Tokens.OfType<PropertyToken>().Select(x => x.PropertyName)
+                var propertyNames = logEvent.MessageTemplate.Tokens
+                    .OfType<PropertyToken>()
+                    .Select(x => x.PropertyName)
                     .ToArray();
                 foreach (var property in logEvent.Properties)
                 {

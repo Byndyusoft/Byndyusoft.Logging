@@ -7,7 +7,6 @@ namespace Byndyusoft.Logging.Enrichers
 {
     public static class LoggerEnrichmentConfigurationExtensions
     {
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithOpenTelemetryTraces(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using OpenTelemetry;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Parsing;
@@ -48,7 +47,9 @@ namespace Byndyusoft.Logging.Sinks
                     fields["error.object"] = logEvent.Exception;
                 }
 
-                var propertyNames = logEvent.MessageTemplate.Tokens.OfType<PropertyToken>().Select(x => x.PropertyName)
+                var propertyNames = logEvent.MessageTemplate.Tokens
+                    .OfType<PropertyToken>()
+                    .Select(x => x.PropertyName)
                     .ToArray();
                 foreach (var property in logEvent.Properties)
                 {

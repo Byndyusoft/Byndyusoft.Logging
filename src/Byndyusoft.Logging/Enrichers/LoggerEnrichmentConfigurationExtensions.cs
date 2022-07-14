@@ -12,7 +12,6 @@ namespace Byndyusoft.Logging.Enrichers
 {
     public static class LoggerEnrichmentConfigurationExtensions
     {
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithApplicationVersion(
             this LoggerEnrichmentConfiguration enrichmentConfiguration,
             string versionString)
@@ -25,7 +24,6 @@ namespace Byndyusoft.Logging.Enrichers
             return enrichmentConfiguration.WithProperty(LoggingPropertyNames.Version, versionString);
         }
 
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithApplicationInformationalVersion(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
@@ -38,7 +36,6 @@ namespace Byndyusoft.Logging.Enrichers
             );
         }
 
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithApplicationAssemblyVersion(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
@@ -50,7 +47,6 @@ namespace Byndyusoft.Logging.Enrichers
             );
         }
 
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithServiceName(
             this LoggerEnrichmentConfiguration enrichmentConfiguration,
             string serviceName = null)
@@ -66,7 +62,6 @@ namespace Byndyusoft.Logging.Enrichers
             );
         }
 
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithBuildConfiguration(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
@@ -101,7 +96,6 @@ namespace Byndyusoft.Logging.Enrichers
             return string.Join("", keyParts);
         }
 
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithEnvironment(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
