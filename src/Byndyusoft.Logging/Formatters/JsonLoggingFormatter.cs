@@ -51,7 +51,7 @@ namespace Byndyusoft.Logging.Formatters
             if (output == null)
                 throw new ArgumentNullException(nameof(output));
 
-            if (valueFormatter == null) 
+            if (valueFormatter == null)
                 throw new ArgumentNullException(nameof(valueFormatter));
 
             output.Write("{\"Timestamp\":\"");

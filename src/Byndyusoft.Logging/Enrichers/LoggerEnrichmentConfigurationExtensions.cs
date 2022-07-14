@@ -14,12 +14,12 @@ namespace Byndyusoft.Logging.Enrichers
     {
         [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithApplicationVersion(
-            this LoggerEnrichmentConfiguration enrichmentConfiguration, 
+            this LoggerEnrichmentConfiguration enrichmentConfiguration,
             string versionString)
         {
-            if(enrichmentConfiguration == null)
+            if (enrichmentConfiguration == null)
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
-            if(string.IsNullOrWhiteSpace(versionString))
+            if (string.IsNullOrWhiteSpace(versionString))
                 throw new ArgumentNullException(nameof(versionString));
 
             return enrichmentConfiguration.WithProperty(LoggingPropertyNames.Version, versionString);
@@ -33,7 +33,8 @@ namespace Byndyusoft.Logging.Enrichers
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
 
             return enrichmentConfiguration.WithApplicationVersion(
-                Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion
+                Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                    .InformationalVersion
             );
         }
 
@@ -94,7 +95,7 @@ namespace Byndyusoft.Logging.Enrichers
 
         private static string EnvironmentKeyToCameCase(string environmentProperty)
         {
-            var keyParts = environmentProperty.Split(new[] {'_'}, StringSplitOptions.RemoveEmptyEntries)
+            var keyParts = environmentProperty.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => TextInfo.ToTitleCase(TextInfo.ToLower(x)));
 
             return string.Join("", keyParts);

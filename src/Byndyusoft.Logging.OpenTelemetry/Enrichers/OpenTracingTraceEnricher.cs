@@ -14,6 +14,7 @@ namespace Byndyusoft.Logging.Enrichers
             {
                 return;
             }
+
             logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("TraceId", currentActivity.TraceId));
             logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("SpanId", currentActivity.SpanId));
             logEvent.RemovePropertyIfPresent("ParentId");

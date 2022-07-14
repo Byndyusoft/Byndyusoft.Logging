@@ -20,9 +20,6 @@ namespace Byndyusoft.Logging.Sample
                     .UseDefaultSettings(context.Configuration, "Sample project")
                     .WriteToOpenTelemetry()
                 )
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

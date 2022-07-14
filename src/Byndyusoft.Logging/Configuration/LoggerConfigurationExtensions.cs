@@ -33,7 +33,7 @@ namespace Byndyusoft.Logging.Configuration
             if (loggerConfiguration == null)
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
-            if(serviceName == null)
+            if (serviceName == null)
                 throw new ArgumentNullException(nameof(serviceName));
 
             return loggerConfiguration
@@ -77,7 +77,7 @@ namespace Byndyusoft.Logging.Configuration
 
             return loggerConfiguration
                 .WriteTo.Async(x => x.File(new JsonLoggingFormatter(), "./logs/verbose.log"))
-                .WriteTo.Async( x=> x.File(new JsonLoggingFormatter(), "./logs/error.log", LogEventLevel.Error));
+                .WriteTo.Async(x => x.File(new JsonLoggingFormatter(), "./logs/error.log", LogEventLevel.Error));
         }
     }
 }
