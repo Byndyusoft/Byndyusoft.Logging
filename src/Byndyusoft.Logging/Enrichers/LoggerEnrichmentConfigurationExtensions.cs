@@ -12,20 +12,18 @@ namespace Byndyusoft.Logging.Enrichers
 {
     public static class LoggerEnrichmentConfigurationExtensions
     {
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithApplicationVersion(
-            this LoggerEnrichmentConfiguration enrichmentConfiguration, 
+            this LoggerEnrichmentConfiguration enrichmentConfiguration,
             string versionString)
         {
-            if(enrichmentConfiguration == null)
+            if (enrichmentConfiguration == null)
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
-            if(string.IsNullOrWhiteSpace(versionString))
+            if (string.IsNullOrWhiteSpace(versionString))
                 throw new ArgumentNullException(nameof(versionString));
 
             return enrichmentConfiguration.WithProperty(LoggingPropertyNames.Version, versionString);
         }
 
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithApplicationInformationalVersion(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
@@ -33,11 +31,11 @@ namespace Byndyusoft.Logging.Enrichers
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
 
             return enrichmentConfiguration.WithApplicationVersion(
-                Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion
+                Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                    .InformationalVersion
             );
         }
 
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithApplicationAssemblyVersion(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
@@ -49,7 +47,6 @@ namespace Byndyusoft.Logging.Enrichers
             );
         }
 
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithServiceName(
             this LoggerEnrichmentConfiguration enrichmentConfiguration,
             string serviceName = null)
@@ -65,17 +62,6 @@ namespace Byndyusoft.Logging.Enrichers
             );
         }
 
-        [ExcludeFromCodeCoverage]
-        public static LoggerConfiguration WithOpenTracingTraces(
-            this LoggerEnrichmentConfiguration enrichmentConfiguration)
-        {
-            if (enrichmentConfiguration == null)
-                throw new ArgumentNullException(nameof(enrichmentConfiguration));
-
-            return enrichmentConfiguration.With<OpenTracingTraceEnricher>();
-        }
-
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithBuildConfiguration(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
@@ -104,13 +90,12 @@ namespace Byndyusoft.Logging.Enrichers
 
         private static string EnvironmentKeyToCameCase(string environmentProperty)
         {
-            var keyParts = environmentProperty.Split(new[] {'_'}, StringSplitOptions.RemoveEmptyEntries)
+            var keyParts = environmentProperty.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => TextInfo.ToTitleCase(TextInfo.ToLower(x)));
 
             return string.Join("", keyParts);
         }
 
-        [ExcludeFromCodeCoverage]
         public static LoggerConfiguration WithEnvironment(
             this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
