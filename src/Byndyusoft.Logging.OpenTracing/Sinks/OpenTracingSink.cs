@@ -9,12 +9,12 @@ using Serilog.Parsing;
 namespace Byndyusoft.Logging.Sinks
 {
     /// <summary>
-    /// Записывает логи в лог спана
+    ///     Записывает логи в лог спана
     /// </summary>
     public class OpenTracingSink : ILogEventSink
     {
-        private readonly ITracer _tracer;
         private readonly IFormatProvider _formatProvider;
+        private readonly ITracer _tracer;
 
         public OpenTracingSink(ITracer tracer, IFormatProvider formatProvider)
         {

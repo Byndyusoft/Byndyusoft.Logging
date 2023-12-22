@@ -1,15 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<PackageId>Byndyusoft.Logging</PackageId>
-		<RootNamespace>Byndyusoft.Logging</RootNamespace>
-		<Description>Serilog based logging</Description>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Byndyusoft.Logging</PackageId>
+    <RootNamespace>Byndyusoft.Logging</RootNamespace>
+    <Description>Serilog based logging</Description>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
-		<PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
+  </ItemGroup>
 
 </Project>

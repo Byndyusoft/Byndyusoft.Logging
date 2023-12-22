@@ -9,7 +9,7 @@ namespace Byndyusoft.Logging.Configuration
     public static class LoggerConfigurationExtensions
     {
         /// <summary>
-        /// Добавлять TraceId, SpanId трассы в логи
+        ///     Добавлять TraceId, SpanId трассы в логи
         /// </summary>
         public static LoggerConfiguration UseOpenTracingTraces(
             this LoggerConfiguration loggerConfiguration)
@@ -22,7 +22,7 @@ namespace Byndyusoft.Logging.Configuration
         }
 
         /// <summary>
-        /// Дублировать логи в трассы OpenTracing
+        ///     Дублировать логи в трассы OpenTracing
         /// </summary>
         public static LoggerConfiguration WriteToOpenTracing(this LoggerConfiguration loggerConfiguration,
             IFormatProvider formatProvider = null)

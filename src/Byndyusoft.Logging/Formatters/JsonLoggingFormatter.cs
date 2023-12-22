@@ -16,8 +16,8 @@ namespace Byndyusoft.Logging.Formatters
         readonly JsonValueFormatter _valueFormatter;
 
         /// <summary>
-        /// Construct a <see cref="CompactJsonFormatter"/>, optionally supplying a formatter for
-        /// <see cref="LogEventPropertyValue"/>s on the event.
+        ///     Construct a <see cref="CompactJsonFormatter" />, optionally supplying a formatter for
+        ///     <see cref="LogEventPropertyValue" />s on the event.
         /// </summary>
         /// <param name="valueFormatter">A value formatter, or null.</param>
         public JsonLoggingFormatter(JsonValueFormatter valueFormatter = null)
@@ -26,7 +26,7 @@ namespace Byndyusoft.Logging.Formatters
         }
 
         /// <summary>
-        /// Format the log event into the output. Subsequent events will be newline-delimited.
+        ///     Format the log event into the output. Subsequent events will be newline-delimited.
         /// </summary>
         /// <param name="logEvent">The event to format.</param>
         /// <param name="output">The output.</param>
@@ -37,11 +37,11 @@ namespace Byndyusoft.Logging.Formatters
         }
 
         /// <summary>
-        /// Format the log event into the output.
+        ///     Format the log event into the output.
         /// </summary>
         /// <param name="logEvent">The event to format.</param>
         /// <param name="output">The output.</param>
-        /// <param name="valueFormatter">A value formatter for <see cref="LogEventPropertyValue"/>s on the event.</param>
+        /// <param name="valueFormatter">A value formatter for <see cref="LogEventPropertyValue" />s on the event.</param>
         public static void FormatEvent(LogEvent logEvent, TextWriter output, JsonValueFormatter valueFormatter)
         {
             if (logEvent == null)

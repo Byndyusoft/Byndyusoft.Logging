@@ -11,6 +11,8 @@ namespace Byndyusoft.Logging.Enrichers
 {
     public static class LoggerEnrichmentConfigurationExtensions
     {
+        private static readonly TextInfo TextInfo = new CultureInfo("en-US", false).TextInfo;
+
         public static LoggerConfiguration WithApplicationVersion(
             this LoggerEnrichmentConfiguration enrichmentConfiguration,
             string versionString)
@@ -92,8 +94,6 @@ namespace Byndyusoft.Logging.Enrichers
                 throw new InvalidOperationException("Assembly is called from unmanaged code, entry assembly is null");
             return entryAssembly;
         }
-
-        private static readonly TextInfo TextInfo = new CultureInfo("en-US", false).TextInfo;
 
         private static string EnvironmentKeyToCameCase(string environmentProperty)
         {

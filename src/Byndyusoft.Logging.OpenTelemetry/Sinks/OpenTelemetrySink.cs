@@ -9,7 +9,7 @@ using Serilog.Parsing;
 namespace Byndyusoft.Logging.Sinks
 {
     /// <summary>
-    /// Записывает логи в лог спана
+    ///     Записывает логи в лог спана
     /// </summary>
     public class OpenTelemetrySink : ILogEventSink
     {
