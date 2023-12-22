@@ -35,13 +35,7 @@ logger.LogInformation("запрошены {@Values}", (object)values);
 		"Values": [
 			"value1",
 			"value2"
-		],
-    	"Build": {
-			"Commit": "b231ea7",
-			"Branch": "234-sample-project-logger"
-		},
-		"ServiceName": "Sample project",
-		"Environment": "Development"
+		]
 	}
 }
 ```
@@ -54,9 +48,6 @@ logger.LogInformation("запрошены {@Values}", (object)values);
 - `Level` — уровень лога
 - `Properties.*` — все остальные свойства сообщения
 - `Values` — параметры сообщения
-- `Build.*` — параметры извлечённые из переменных окружения `BUILD_BRANCH` и `BUILD_COMMIT`. Поддерживает любые названия по маске `BUILD_*`
-- `ServiceName` — название сервиса, задаётся в конфигурации
-- `Environment` — значение переменной окружения `ASPNETCORE_ENVIRONMENT`
 
 Кроме того `Properties.*` обогащается полями добавленными в контекст лога. Т.е. если вызывать `logger.LogInformation("запрошены {@Values}", (object)values)` из метода контроллера, то в `Properties` добавятся следующие поля, которые добавляет инфраструктура asp.net
 
@@ -151,10 +142,14 @@ logger.LogError(ex, "Должен совпасть хэш ошибки")
 
 ```
 return loggerConfiguration
-    .UseDefaultEnrichSettings(serviceName)
+    .Enrich.FromLogContext()
     .UseConsoleWriterSettings(restrictedToMinimumLevel)
     .OverrideDefaultLoggers()
     .ReadFrom.Configuration(configuration)
 ```
 
 Можно использовать только те его части, которые подходят вашему проекту.
+
+# Обгащение дополнительными полями
+
+Для обогащения информацией о параметрах окружения с наименованием BUILD_*, именем сервиса и версией сервиса можно воспользоваться библиотекой [Byndyusoft.Telemetry.Logging.Serilog](https://www.nuget.org/packages/Byndyusoft.Telemetry.Logging.Serilog). Документация - [тут](https://github.com/Byndyusoft/Byndyusoft.Telemetry/blob/master/README.md).
