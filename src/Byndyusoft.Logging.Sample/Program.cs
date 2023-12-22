@@ -17,7 +17,7 @@ namespace Byndyusoft.Logging
                 .UseSerilog((context, configuration) => configuration
                     .UseOpenTelemetryTraces()
                     .UseFileWriterSettings()
-                    .UseDefaultSettings(context.Configuration, "Sample project")
+                    .UseDefaultSettings(context.Configuration)
                     .WriteToOpenTelemetry()
                 )
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });

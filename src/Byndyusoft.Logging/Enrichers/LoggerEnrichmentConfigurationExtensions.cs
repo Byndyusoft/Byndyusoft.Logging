@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using Serilog;
 using Serilog.Configuration;
@@ -48,71 +45,12 @@ namespace Byndyusoft.Logging.Enrichers
             );
         }
 
-        public static LoggerConfiguration WithServiceName(
-            this LoggerEnrichmentConfiguration enrichmentConfiguration,
-            string serviceName = null)
-        {
-            if (enrichmentConfiguration == null)
-                throw new ArgumentNullException(nameof(enrichmentConfiguration));
-
-            return enrichmentConfiguration.WithProperty(
-                LoggingPropertyNames.ServiceName,
-                string.IsNullOrWhiteSpace(serviceName) == false
-                    ? serviceName
-                    : Assembly.GetEntryAssembly()?.GetName().Name ?? ""
-            );
-        }
-
-        public static LoggerConfiguration WithBuildConfiguration(
-            this LoggerEnrichmentConfiguration enrichmentConfiguration)
-        {
-            if (enrichmentConfiguration == null)
-                throw new ArgumentNullException(nameof(enrichmentConfiguration));
-
-            const string buildKeyPrefix = "BUILD_";
-
-            var buildProperties = new Dictionary<string, string>();
-            var variables = Environment.GetEnvironmentVariables();
-            foreach (DictionaryEntry variable in variables)
-            {
-                var property = variable.Key.ToString();
-                if (property.StartsWith(buildKeyPrefix))
-                {
-                    var key = property.Remove(0, buildKeyPrefix.Length);
-                    buildProperties.Add(EnvironmentKeyToCameCase(key), variable.Value.ToString());
-                }
-            }
-
-            return enrichmentConfiguration
-                .WithProperty(LoggingPropertyNames.Build, buildProperties, true);
-        }
-
         private static Assembly GetNotNullEntryAssembly()
         {
             var entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly == null)
                 throw new InvalidOperationException("Assembly is called from unmanaged code, entry assembly is null");
             return entryAssembly;
-        }
-
-        private static string EnvironmentKeyToCameCase(string environmentProperty)
-        {
-            var keyParts = environmentProperty.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => TextInfo.ToTitleCase(TextInfo.ToLower(x)));
-
-            return string.Join("", keyParts);
-        }
-
-        public static LoggerConfiguration WithEnvironment(
-            this LoggerEnrichmentConfiguration enrichmentConfiguration)
-        {
-            if (enrichmentConfiguration == null)
-                throw new ArgumentNullException(nameof(enrichmentConfiguration));
-
-            return enrichmentConfiguration.WithProperty(
-                LoggingPropertyNames.Environment,
-                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
-            );
         }
     }
 }
