@@ -13,18 +13,18 @@ namespace Byndyusoft.Logging.Sinks
     /// </summary>
     public class OpenTracingSink : ILogEventSink
     {
-        private readonly ITracer tracer;
-        private readonly IFormatProvider formatProvider;
+        private readonly ITracer _tracer;
+        private readonly IFormatProvider _formatProvider;
 
         public OpenTracingSink(ITracer tracer, IFormatProvider formatProvider)
         {
-            this.tracer = tracer;
-            this.formatProvider = formatProvider;
+            this._tracer = tracer;
+            this._formatProvider = formatProvider;
         }
 
         public void Emit(LogEvent logEvent)
         {
-            ISpan span = tracer.ActiveSpan;
+            ISpan span = _tracer.ActiveSpan;
 
             if (span == null)
             {
@@ -38,7 +38,7 @@ namespace Byndyusoft.Logging.Sinks
                     [LogFields.Event] = logEvent.MessageTemplate.Text,
                     ["level"] = logEvent.Level.ToString(),
                     ["component"] = logEvent.Properties["SourceContext"],
-                    [LogFields.Message] = logEvent.RenderMessage(formatProvider)
+                    [LogFields.Message] = logEvent.RenderMessage(_formatProvider)
                 };
 
                 if (logEvent.Exception != null)

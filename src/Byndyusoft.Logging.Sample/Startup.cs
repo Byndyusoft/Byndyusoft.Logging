@@ -1,16 +1,16 @@
+using Jaeger.Reporters;
+using Jaeger.Samplers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Jaeger.Reporters;
-using Jaeger.Samplers;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry.Trace;
 using OpenTracing;
 using OpenTracing.Util;
 using Tracer = Jaeger.Tracer;
 
-namespace Byndyusoft.Logging.Sample
+namespace Byndyusoft.Logging
 {
     public class Startup
     {
@@ -20,7 +20,7 @@ namespace Byndyusoft.Logging.Sample
         {
             services.AddControllers();
 
-            services.AddSingleton<ITracer>(serviceProvider =>
+            services.AddSingleton(serviceProvider =>
             {
                 ILoggerFactory loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
 

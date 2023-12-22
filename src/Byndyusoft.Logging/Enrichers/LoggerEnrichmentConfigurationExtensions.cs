@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -31,7 +30,7 @@ namespace Byndyusoft.Logging.Enrichers
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
 
             return enrichmentConfiguration.WithApplicationVersion(
-                Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                GetNotNullEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                     .InformationalVersion
             );
         }
@@ -43,7 +42,7 @@ namespace Byndyusoft.Logging.Enrichers
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
 
             return enrichmentConfiguration.WithApplicationVersion(
-                Assembly.GetEntryAssembly().GetName().Version.ToString(4)
+                GetNotNullEntryAssembly().GetName().Version.ToString(4)
             );
         }
 
@@ -84,6 +83,14 @@ namespace Byndyusoft.Logging.Enrichers
 
             return enrichmentConfiguration
                 .WithProperty(LoggingPropertyNames.Build, buildProperties, true);
+        }
+
+        private static Assembly GetNotNullEntryAssembly()
+        {
+            var entryAssembly = Assembly.GetEntryAssembly();
+            if (entryAssembly == null)
+                throw new InvalidOperationException("Assembly is called from unmanaged code, entry assembly is null");
+            return entryAssembly;
         }
 
         private static readonly TextInfo TextInfo = new CultureInfo("en-US", false).TextInfo;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -14,7 +13,7 @@ namespace Byndyusoft.Logging.Formatters
     //https://github.com/serilog/serilog-formatting-compact/blob/dev/src/Serilog.Formatting.Compact/Formatting/Compact/RenderedCompactJsonFormatter.cs
     public class JsonLoggingFormatter : ITextFormatter
     {
-        readonly JsonValueFormatter valueFormatter;
+        readonly JsonValueFormatter _valueFormatter;
 
         /// <summary>
         /// Construct a <see cref="CompactJsonFormatter"/>, optionally supplying a formatter for
@@ -23,7 +22,7 @@ namespace Byndyusoft.Logging.Formatters
         /// <param name="valueFormatter">A value formatter, or null.</param>
         public JsonLoggingFormatter(JsonValueFormatter valueFormatter = null)
         {
-            this.valueFormatter = valueFormatter ?? new JsonValueFormatter(typeTagName: "$type");
+            this._valueFormatter = valueFormatter ?? new JsonValueFormatter(typeTagName: "$type");
         }
 
         /// <summary>
@@ -33,7 +32,7 @@ namespace Byndyusoft.Logging.Formatters
         /// <param name="output">The output.</param>
         public void Format(LogEvent logEvent, TextWriter output)
         {
-            FormatEvent(logEvent, output, valueFormatter);
+            FormatEvent(logEvent, output, _valueFormatter);
             output.WriteLine();
         }
 
