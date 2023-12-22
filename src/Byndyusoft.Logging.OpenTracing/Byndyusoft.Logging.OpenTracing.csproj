@@ -6,6 +6,7 @@
     <RootNamespace>Byndyusoft.Logging</RootNamespace>
     <PackageTags>Byndyusoft;Logging;Serilog;OpenTracing</PackageTags>
     <Description>OpenTracing support for Byndyusoft.Logging library</Description>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

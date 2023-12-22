@@ -5,6 +5,7 @@
     <PackageId>Byndyusoft.Logging</PackageId>
     <RootNamespace>Byndyusoft.Logging</RootNamespace>
     <Description>Serilog based logging</Description>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

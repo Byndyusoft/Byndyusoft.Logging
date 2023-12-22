@@ -6,5 +6,6 @@
     <PackageTags>Byndyusoft;Logging;Serilog</PackageTags>
     <RepositoryUrl>https://github.com/Byndyusoft/Byndyusoft.Logging</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+	<IsPackable>false</IsPackable>
   </PropertyGroup>
 </Project>

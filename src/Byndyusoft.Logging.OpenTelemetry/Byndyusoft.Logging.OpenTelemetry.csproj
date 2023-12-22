@@ -5,6 +5,7 @@
     <RootNamespace>Byndyusoft.Logging</RootNamespace>
     <PackageTags>Byndyusoft;Logging;Serilog;OpenTelemetry</PackageTags>
     <Description>OpenTelemetry support for Byndyusoft.Logging library</Description>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
