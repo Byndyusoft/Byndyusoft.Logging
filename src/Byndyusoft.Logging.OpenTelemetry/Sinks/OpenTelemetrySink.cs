@@ -54,7 +54,10 @@ namespace Byndyusoft.Logging.Sinks
                 foreach (var property in logEvent.Properties)
                 {
                     if (propertyNames.Contains(property.Key))
-                        fields[property.Key] = property.Value;
+                    {
+                        var key = property.Key.Replace('_', '.');
+                        fields[key] = property.Value;
+                    }
                 }
 
                 var activityLogEvent = new ActivityEvent(renderMessage, tags: new ActivityTagsCollection(fields));
