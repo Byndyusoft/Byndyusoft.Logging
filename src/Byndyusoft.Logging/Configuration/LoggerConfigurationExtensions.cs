@@ -1,4 +1,4 @@
-﻿using System;   
+﻿using System;
 using Byndyusoft.Logging.Formatters;
 using Microsoft.Extensions.Configuration;
 using Serilog;
