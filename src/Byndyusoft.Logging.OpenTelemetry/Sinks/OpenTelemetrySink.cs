@@ -56,7 +56,7 @@ namespace Byndyusoft.Logging.Sinks
                     if (propertyNames.Contains(property.Key))
                     {
                         var key = property.Key.Replace('_', '.');
-                        fields[key] = property.Value;
+                        fields[key] = GetValue(property.Value);
                     }
                 }
 
@@ -75,6 +75,14 @@ namespace Byndyusoft.Logging.Sinks
                     new ActivityEvent("Logging error", tags: new ActivityTagsCollection(fields));
                 activity.AddEvent(activityExceptionEvent);
             }
+        }
+
+        private object GetValue(LogEventPropertyValue logEventPropertyValue)
+        {
+            if (logEventPropertyValue is ScalarValue scalarValue)
+                return scalarValue.Value;
+
+            return logEventPropertyValue;
         }
     }
 }

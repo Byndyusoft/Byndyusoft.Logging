@@ -25,6 +25,7 @@ namespace Byndyusoft.Logging.Controllers
             var values = new[] { "value1", "value2" };
 
             _logger.LogInformation("запрошены {@Values}", (object)values);
+            _logger.LogInformation("Scalar Values. Int - {Integer}, String - {String}", 10, "{\"Id\":11}");
             return values;
         }
 
