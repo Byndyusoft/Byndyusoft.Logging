@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Reflection;
 using Serilog;
 using Serilog.Configuration;
@@ -8,8 +7,6 @@ namespace Byndyusoft.Logging.Enrichers
 {
     public static class LoggerEnrichmentConfigurationExtensions
     {
-        private static readonly TextInfo TextInfo = new CultureInfo("en-US", false).TextInfo;
-
         public static LoggerConfiguration WithApplicationVersion(
             this LoggerEnrichmentConfiguration enrichmentConfiguration,
             string versionString)
