@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Byndyusoft.Logging.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -26,6 +27,14 @@ namespace Byndyusoft.Logging.Controllers
 
             _logger.LogInformation("запрошены {@Values}", (object)values);
             _logger.LogInformation("Scalar Values. Int - {Integer}, String - {String}", 10, "{\"Id\":11}");
+
+            var eventItems = new[]
+            {
+                new StructuredActivityEventItem("Id", 10, "Id"),
+                new StructuredActivityEventItem("Company.Name", "Byndyusoft", "CompanyName")
+            };
+            _logger.LogStructuredActivityEvent("MethodInput", eventItems);
+
             return values;
         }
 

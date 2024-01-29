@@ -1,3 +1,4 @@
+using Byndyusoft.Logging.Builders;
 using Byndyusoft.Logging.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -18,7 +19,7 @@ namespace Byndyusoft.Logging
                     .UseOpenTelemetryTraces()
                     .UseFileWriterSettings()
                     .UseDefaultSettings(context.Configuration)
-                    .WriteToOpenTelemetry()
+                    .WriteToOpenTelemetry(activityEventBuilder: StructuredActivityEventBuilder.Instance)
                 )
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }

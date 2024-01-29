@@ -22,8 +22,8 @@ namespace Byndyusoft.Logging.Extensions
                 throw new ArgumentNullException(nameof(eventItems));
 
             var messageBuilder =
-                new StringBuilder($"{LogEventPropertyNames.StructureActivityEventName} = {{{eventName}}}; ");
-            var parameters = new List<object>();
+                new StringBuilder($"Structured Event {{{LogEventPropertyNames.StructureActivityEventName}}} Properties: ");
+            var parameters = new List<object> { eventName };
             foreach (var eventItem in eventItems)
             {
                 var itemName = eventItem.Name.Replace('.', '_');
