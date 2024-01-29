@@ -150,6 +150,30 @@ return loggerConfiguration
 
 Можно использовать только те его части, которые подходят вашему проекту.
 
+## Хочу положить в события трассировок только определенные свойства (структурные события)
+
+Сначала нужно подключить `Byndyusoft.Logging.OpenTelemetry.Abstractions` [![Nuget](https://img.shields.io/nuget/v/Byndyusoft.Logging.OpenTelemetry.Abstractions.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry.Abstractions/) [![Downloads](https://img.shields.io/nuget/dt/Byndyusoft.Logging.OpenTelemetry.Abstractions.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry.Abstractions/)
+
+После этого нужно подключить построитель структурных событий логов для минимизации событий в трассировке.
+
+```
+.UseSerilog((context, configuration) => configuration
+    .WriteToOpenTelemetry(activityEventBuilder: StructuredActivityEventBuilder.Instance)
+```
+
+Пример логирования структурных событий:
+
+```
+var eventItems = new[]
+{
+    new StructuredActivityEventItem("Id", 10, "Id"),
+    new StructuredActivityEventItem("Company.Name", "Byndyusoft", "CompanyName")
+};
+_logger.LogStructuredActivityEvent("MethodInput", eventItems);
+```
+
+В событии активности добавятся только два свойства: _Id_ и _Company.Name_. Имя события будет _MethodInput_.
+
 # Обгащение дополнительными полями
 
 Для обогащения информацией о параметрах окружения с наименованием BUILD_*, именем сервиса и версией сервиса можно воспользоваться библиотекой [Byndyusoft.Telemetry.Logging.Serilog](https://www.nuget.org/packages/Byndyusoft.Telemetry.Logging.Serilog). Документация - [тут](https://github.com/Byndyusoft/Byndyusoft.Telemetry/blob/master/README.md).
