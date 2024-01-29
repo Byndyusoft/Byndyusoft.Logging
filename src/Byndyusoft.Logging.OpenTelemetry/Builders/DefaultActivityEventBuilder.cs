@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Byndyusoft.Logging.Builders.Interfaces;
-using Microsoft.Extensions.Logging;
 using Serilog.Events;
 using Serilog.Parsing;
 
@@ -81,82 +79,6 @@ namespace Byndyusoft.Logging.Builders
                 return scalarValue.Value;
 
             return logEventPropertyValue;
-        }
-    }
-
-    public class StructuredActivityEventBuilder : DefaultActivityEventBuilder
-    {
-        public new static IActivityEventBuilder Instance { get; } = new StructuredActivityEventBuilder();
-
-        public override ActivityEvent Build(
-            IFormatProvider formatProvider, 
-            LogEvent logEvent)
-        {
-            if (logEvent.Properties.TryGetValue(
-                    LogEventPropertyNames.StructureActivityEventName,
-                    out var eventNameValue) == false)
-                return base.Build(formatProvider, logEvent);
-
-            var eventName = GetValue(eventNameValue)?.ToString() ?? "Unrecognized Event";
-            var fields = new Dictionary<string, object>();
-
-            AddExceptionFields(logEvent, fields);
-            AddMessageTemplatePropertyFields(logEvent, fields,
-                name => name != LogEventPropertyNames.StructureActivityEventName);
-            fields.Remove(LogEventPropertyNames.StructureActivityEventName);
-
-            return new ActivityEvent(eventName, tags: new ActivityTagsCollection(fields));
-        }
-    }
-
-    public static class LogEventPropertyNames
-    {
-        public static string StructureActivityEventName => "_activity_event_name";
-    }
-
-    public static class LoggerExtensions
-    {
-        public static void LogStructuredActivityEvent(
-            this ILogger logger, 
-            string eventName,
-            StructuredActivityEventItem[] eventItems)
-        {
-            if (logger == null)
-                throw new ArgumentNullException(nameof(logger));
-
-            if (string.IsNullOrEmpty(eventName))
-                throw new ArgumentNullException(nameof(eventName));
-
-            if (eventItems == null)
-                throw new ArgumentNullException(nameof(eventItems));
-
-            var messageBuilder =
-                new StringBuilder($"{LogEventPropertyNames.StructureActivityEventName} = {{{eventName}}}; ");
-            var parameters = new List<object>();
-            foreach (var eventItem in eventItems)
-            {
-                var itemName = eventItem.Name.Replace('.', '_');
-                messageBuilder.Append($"{eventItem.Description} = {{{itemName}}}; ");
-                parameters.Add(eventItem.Value);
-            }
-
-            logger.LogInformation(messageBuilder.ToString(), parameters.ToArray());
-        }
-    }
-
-    public class StructuredActivityEventItem
-    {
-        public string Name { get; }
-
-        public object Value { get; }
-
-        public string Description { get; }
-
-        public StructuredActivityEventItem(string name, object value, string description)
-        {
-            Name = name;
-            Value = value;
-            Description = description;
         }
     }
 }

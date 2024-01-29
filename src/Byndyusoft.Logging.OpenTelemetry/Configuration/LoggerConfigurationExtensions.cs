@@ -1,4 +1,5 @@
 ﻿using System;
+using Byndyusoft.Logging.Builders.Interfaces;
 using Byndyusoft.Logging.Enrichers;
 using Byndyusoft.Logging.Sinks;
 using Serilog;
@@ -23,14 +24,15 @@ namespace Byndyusoft.Logging.Configuration
         /// <summary>
         ///     Дублировать логи в трассы OpenTracing
         /// </summary>
-        public static LoggerConfiguration WriteToOpenTelemetry(this LoggerConfiguration loggerConfiguration,
-            IFormatProvider formatProvider = null)
+        public static LoggerConfiguration WriteToOpenTelemetry(
+            this LoggerConfiguration loggerConfiguration,
+            IFormatProvider formatProvider = null,
+            IActivityEventBuilder activityEventBuilder = null)
         {
             if (loggerConfiguration == null)
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
-            return loggerConfiguration
-                .WriteTo.Sink(new OpenTelemetrySink(formatProvider));
+            return loggerConfiguration.WriteTo.Sink(new OpenTelemetrySink(formatProvider, activityEventBuilder));
         }
     }
 }

@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Byndyusoft.Logging.OpenTelemetry.Abstractions\Byndyusoft.Logging.OpenTelemetry.Abstractions.csproj" />
     <ProjectReference Include="..\Byndyusoft.Logging\Byndyusoft.Logging.csproj" />
   </ItemGroup>
 
