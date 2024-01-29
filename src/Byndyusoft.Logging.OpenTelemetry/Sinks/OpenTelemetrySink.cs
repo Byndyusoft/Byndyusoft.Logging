@@ -32,10 +32,9 @@ namespace Byndyusoft.Logging.Sinks
             try
             {
                 var renderMessage = logEvent.RenderMessage(_formatProvider);
-
+                
                 var fields = new Dictionary<string, object>
                 {
-                    ["event"] = logEvent.MessageTemplate.Text,
                     ["level"] = logEvent.Level.ToString(),
                     ["component"] = logEvent.Properties["SourceContext"],
                     ["message"] = renderMessage
@@ -60,7 +59,7 @@ namespace Byndyusoft.Logging.Sinks
                     }
                 }
 
-                var activityLogEvent = new ActivityEvent(renderMessage, tags: new ActivityTagsCollection(fields));
+                var activityLogEvent = new ActivityEvent(logEvent.MessageTemplate.Text, tags: new ActivityTagsCollection(fields));
                 activity.AddEvent(activityLogEvent);
             }
             catch (Exception logException)
