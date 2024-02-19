@@ -174,6 +174,6 @@ _logger.LogStructuredActivityEvent("MethodInput", eventItems);
 
 В событии активности добавятся только два свойства: _Id_ и _Company.Name_. Имя события будет _MethodInput_.
 
-# Обгащение дополнительными полями
+# Обогащение дополнительными полями
 
 Для обогащения информацией о параметрах окружения с наименованием BUILD_*, именем сервиса и версией сервиса можно воспользоваться библиотекой [Byndyusoft.Telemetry.Logging.Serilog](https://www.nuget.org/packages/Byndyusoft.Telemetry.Logging.Serilog). Документация - [тут](https://github.com/Byndyusoft/Byndyusoft.Telemetry/blob/master/README.md).
