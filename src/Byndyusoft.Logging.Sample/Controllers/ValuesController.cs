@@ -33,7 +33,7 @@ namespace Byndyusoft.Logging.Controllers
                 new StructuredActivityEventItem("Id", 10),
                 new StructuredActivityEventItem("Company.Name", "Byndyusoft")
             };
-            _logger.LogStructuredActivityEvent("MethodInput", eventItems);
+            _logger.LogStructuredActivityEvent("MethodInput", eventItems, LogLevel.Warning);
 
             return values;
         }

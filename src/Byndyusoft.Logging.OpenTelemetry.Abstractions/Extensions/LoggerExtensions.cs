@@ -10,7 +10,8 @@ namespace Byndyusoft.Logging.Extensions
         public static void LogStructuredActivityEvent(
             this ILogger logger, 
             string eventName,
-            StructuredActivityEventItem[] eventItems)
+            StructuredActivityEventItem[] eventItems, 
+            LogLevel logLevel = LogLevel.Information)
         {
             if (logger == null)
                 throw new ArgumentNullException(nameof(logger));
@@ -31,7 +32,7 @@ namespace Byndyusoft.Logging.Extensions
                 parameters.Add(eventItem.Value);
             }
 
-            logger.LogInformation(messageBuilder.ToString(), parameters.ToArray());
+            logger.Log(logLevel, messageBuilder.ToString(), parameters.ToArray());
         }
     }
 }
