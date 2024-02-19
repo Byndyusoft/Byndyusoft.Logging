@@ -2,6 +2,6 @@
 {
     public static class LogEventPropertyNames
     {
-        public static string StructureActivityEventName => "_activity_event_name";
+        public static string StructureActivityEventName => "TraceEventName";
     }
 }

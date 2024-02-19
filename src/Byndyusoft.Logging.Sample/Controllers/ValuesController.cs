@@ -28,6 +28,9 @@ namespace Byndyusoft.Logging.Controllers
             _logger.LogInformation("запрошены {@Values}", (object)values);
             _logger.LogInformation("Scalar Values. Int - {Integer}, String - {String}", 10, "{\"Id\":11}");
 
+            _logger.LogInformation("{TraceEventName} Parameters: Company.Name = {Company_Name}; Id = {Id}",
+                "MethodInput", "Byndyusoft", 10);
+
             var eventItems = new[]
             {
                 new StructuredActivityEventItem("Id", 10),
