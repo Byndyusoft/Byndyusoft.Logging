@@ -27,7 +27,6 @@ namespace Byndyusoft.Logging.Builders
                 logEvent, 
                 fields,
                 name => name != LogEventPropertyNames.StructureActivityEventName);
-            fields.Remove(LogEventPropertyNames.StructureActivityEventName);
 
             return new ActivityEvent(eventName, tags: new ActivityTagsCollection(fields));
         }
