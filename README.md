@@ -166,8 +166,8 @@ return loggerConfiguration
 ```
 var eventItems = new[]
 {
-    new StructuredActivityEventItem("Id", 10, "Id"),
-    new StructuredActivityEventItem("Company.Name", "Byndyusoft", "CompanyName")
+    new StructuredActivityEventItem("Id", 10),
+    new StructuredActivityEventItem("Company.Name", "Byndyusoft")
 };
 _logger.LogStructuredActivityEvent("MethodInput", eventItems);
 ```
