@@ -27,7 +27,7 @@ namespace Byndyusoft.Logging.Extensions
             foreach (var eventItem in eventItems)
             {
                 var itemName = eventItem.Name.Replace('.', '_');
-                messageBuilder.Append($"{eventItem.Description} = {{{itemName}}}; ");
+                messageBuilder.Append($"{eventItem.Name} = {{{itemName}}}; ");
                 parameters.Add(eventItem.Value);
             }
 

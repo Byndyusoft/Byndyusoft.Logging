@@ -5,11 +5,10 @@
     /// </summary>
     public class StructuredActivityEventItem
     {
-        public StructuredActivityEventItem(string name, object value, string description)
+        public StructuredActivityEventItem(string name, object value)
         {
             Name = name;
             Value = value;
-            Description = description;
         }
 
         /// <summary>
@@ -21,7 +20,5 @@
         ///     Значение параметра
         /// </summary>
         public object Value { get; }
-
-        public string Description { get; }
     }
 }
