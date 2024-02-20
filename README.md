@@ -175,6 +175,14 @@ _logger.LogInformation("{TraceEventName} Parameters: Company.Name = {Company_Nam
 
 В событии активности добавятся только два свойства: _Id_ и _Company.Name_. Имя события будет _MethodInput_.
 
+Если не включить структурное логирование, то в событии трассы появится следующее:
+
+![Not Structured Logs](/Not%20Structured.png?raw=true)
+
+Если включить структурное логирование, то в событии трассы появятся только три параметра:
+
+![Not Structured Logs](/Structured.png?raw=true)
+
 ### Использование вспомогательного метода
 
 Сначала нужно подключить `Byndyusoft.Logging.OpenTelemetry.Abstractions` [![Nuget](https://img.shields.io/nuget/v/Byndyusoft.Logging.OpenTelemetry.Abstractions.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry.Abstractions/) [![Downloads](https://img.shields.io/nuget/dt/Byndyusoft.Logging.OpenTelemetry.Abstractions.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry.Abstractions/)
