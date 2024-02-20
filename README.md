@@ -150,44 +150,45 @@ return loggerConfiguration
 
 Можно использовать только те его части, которые подходят вашему проекту.
 
-## Хочу положить в события трассировок только параметры, а не весь лог (структурные события)
+## Хочу положить в события трассировок только заданные мной параметры, а не весь лог (структурные события)
 
-Если использовать стандартный способ переноса логов в события трассы, то в них будут попадать само сообщение лога, его параметры и остальные дополнительные параметры, такие как уровень логирования и контекст логирования. 
+Если использовать стандартный способ переноса логов в события трассы, то в них будут попадать само сообщение лога, его свойства и остальные дополнительные параметры, такие как уровень логирования и контекст логирования. 
 
-Если требуется, чтобы в событиях трассы попадали только данные, без дублирования их в сообщении, то можно использовать структурные события. Они позволяют записать события в виде название события и его параметров.
+Если не включить структурное логирование, то в событии трассы появится следующее:
 
-Для начала нужно подключить структурные события для построения событий активности.
+![Not Structured Logs](/Not%20Structured.png?raw=true)
+
+Если требуется, чтобы в событиях трассы попадали только параметры без дублирования их в сообщении, то можно использовать структурные события. Они позволяют записать события в виде название события и его параметров.
+Пример:
+
+![Not Structured Logs](/Structured.png?raw=true)
+
+Сначала нужно подключить структурные события для построения событий активности.
 
 ```
 .UseSerilog((context, configuration) => configuration
     .WriteToOpenTelemetry(activityEventBuilder: StructuredActivityEventBuilder.Instance)
 ```
 
-Чтобы получить в трассах имя события без параметров и управлять названием параметров, нужно логировать по конвенции или использовать вспомогательный метод. 
+Чтобы создавать структурные события, нужно логировать их по конвенции или использовать вспомогательный метод. 
 
-### Логирование по конвенции
+### Логирование структурных событий по конвенции
 
-Для этого в логах нужно добавить параметр _TraceEventName_, которое будет означать название события:
+Для этого в логах должно быть свойство _TraceEventName_, которое будет использоваться как название события в трассе:
 
 ```
 _logger.LogInformation("{TraceEventName} Parameters: Company.Name = {Company_Name}; Id = {Id}", "MethodInput", "Byndyusoft", 10);
 ```
 
-В событии активности добавятся только два свойства: _Id_ и _Company.Name_. Имя события будет _MethodInput_.
+В логи сообщение попадёт как обычно, а событие трассы будет содержать только два параметра: _Id_ и _Company.Name_. Имя события будет _MethodInput_. События будут выглядеть, как на картинке выше.
 
-Если не включить структурное логирование, то в событии трассы появится следующее:
+### Логирование структурных событий через вспомогательный метод
 
-![Not Structured Logs](/Not%20Structured.png?raw=true)
+Чтобы явно указать на использование структурных событий, можно воспользоваться вспомогательным методом `LogStructuredActivityEvent`, который находится в пакете `Byndyusoft.Logging.OpenTelemetry.Abstractions`.
 
-Если включить структурное логирование, то в событии трассы появятся только три параметра:
+[![Nuget](https://img.shields.io/nuget/v/Byndyusoft.Logging.OpenTelemetry.Abstractions.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry.Abstractions/) [![Downloads](https://img.shields.io/nuget/dt/Byndyusoft.Logging.OpenTelemetry.Abstractions.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry.Abstractions/)
 
-![Not Structured Logs](/Structured.png?raw=true)
-
-### Использование вспомогательного метода
-
-Сначала нужно подключить `Byndyusoft.Logging.OpenTelemetry.Abstractions` [![Nuget](https://img.shields.io/nuget/v/Byndyusoft.Logging.OpenTelemetry.Abstractions.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry.Abstractions/) [![Downloads](https://img.shields.io/nuget/dt/Byndyusoft.Logging.OpenTelemetry.Abstractions.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry.Abstractions/)
-
-Далее собираем параметры и логируем, используя метод-расширение _LogStructuredActivityEvent_:
+Чтобы создать событие трассировки, аналогичное картинке выше, нужно написать следующее:
 
 ```
 var eventItems = new[]
@@ -198,9 +199,13 @@ var eventItems = new[]
 _logger.LogStructuredActivityEvent("MethodInput", eventItems);
 ```
 
-В событии активности добавятся только два свойства: _Id_ и _Company.Name_. Имя события будет _MethodInput_.
+Пример выше полностью аналогичен коду логирования по конвенции:
 
-По умолчанию структурные события попадают в логи с уровнем Information.
+```
+_logger.LogInformation("Structured Event {TraceEventName} Properties: Id = {Id}; Company.Name = {Company_Name}; ", "MethodInput", 10, "Byndyusoft");
+```
+
+По умолчанию структурные события попадают в логи с уровнем _Information_.
 
 # Обогащение дополнительными полями
 
