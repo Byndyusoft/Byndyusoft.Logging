@@ -11,10 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="OpenTracing" Version="0.12.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Byndyusoft.Logging\Byndyusoft.Logging.csproj" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
   </ItemGroup>
 
 </Project>
