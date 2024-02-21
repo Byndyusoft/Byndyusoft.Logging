@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -14,35 +13,35 @@ namespace Byndyusoft.Logging.Formatters
     //https://github.com/serilog/serilog-formatting-compact/blob/dev/src/Serilog.Formatting.Compact/Formatting/Compact/RenderedCompactJsonFormatter.cs
     public class JsonLoggingFormatter : ITextFormatter
     {
-        readonly JsonValueFormatter valueFormatter;
+        readonly JsonValueFormatter _valueFormatter;
 
         /// <summary>
-        /// Construct a <see cref="CompactJsonFormatter"/>, optionally supplying a formatter for
-        /// <see cref="LogEventPropertyValue"/>s on the event.
+        ///     Construct a <see cref="CompactJsonFormatter" />, optionally supplying a formatter for
+        ///     <see cref="LogEventPropertyValue" />s on the event.
         /// </summary>
         /// <param name="valueFormatter">A value formatter, or null.</param>
         public JsonLoggingFormatter(JsonValueFormatter valueFormatter = null)
         {
-            this.valueFormatter = valueFormatter ?? new JsonValueFormatter(typeTagName: "$type");
+            this._valueFormatter = valueFormatter ?? new JsonValueFormatter(typeTagName: "$type");
         }
 
         /// <summary>
-        /// Format the log event into the output. Subsequent events will be newline-delimited.
+        ///     Format the log event into the output. Subsequent events will be newline-delimited.
         /// </summary>
         /// <param name="logEvent">The event to format.</param>
         /// <param name="output">The output.</param>
         public void Format(LogEvent logEvent, TextWriter output)
         {
-            FormatEvent(logEvent, output, valueFormatter);
+            FormatEvent(logEvent, output, _valueFormatter);
             output.WriteLine();
         }
 
         /// <summary>
-        /// Format the log event into the output.
+        ///     Format the log event into the output.
         /// </summary>
         /// <param name="logEvent">The event to format.</param>
         /// <param name="output">The output.</param>
-        /// <param name="valueFormatter">A value formatter for <see cref="LogEventPropertyValue"/>s on the event.</param>
+        /// <param name="valueFormatter">A value formatter for <see cref="LogEventPropertyValue" />s on the event.</param>
         public static void FormatEvent(LogEvent logEvent, TextWriter output, JsonValueFormatter valueFormatter)
         {
             if (logEvent == null)

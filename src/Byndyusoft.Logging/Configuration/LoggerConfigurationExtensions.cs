@@ -1,5 +1,4 @@
 ﻿using System;
-using Byndyusoft.Logging.Enrichers;
 using Byndyusoft.Logging.Formatters;
 using Microsoft.Extensions.Configuration;
 using Serilog;
@@ -12,7 +11,6 @@ namespace Byndyusoft.Logging.Configuration
         public static LoggerConfiguration UseDefaultSettings(
             this LoggerConfiguration loggerConfiguration,
             IConfiguration configuration,
-            string serviceName,
             LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose)
         {
             if (loggerConfiguration == null)
@@ -21,26 +19,10 @@ namespace Byndyusoft.Logging.Configuration
                 throw new ArgumentNullException(nameof(configuration));
 
             return loggerConfiguration
-                .UseDefaultEnrichSettings(serviceName)
+                .Enrich.FromLogContext()
                 .UseConsoleWriterSettings(restrictedToMinimumLevel)
                 .OverrideDefaultLoggers()
                 .ReadFrom.Configuration(configuration);
-        }
-
-        public static LoggerConfiguration UseDefaultEnrichSettings(
-            this LoggerConfiguration loggerConfiguration, string serviceName)
-        {
-            if (loggerConfiguration == null)
-                throw new ArgumentNullException(nameof(loggerConfiguration));
-
-            if (serviceName == null)
-                throw new ArgumentNullException(nameof(serviceName));
-
-            return loggerConfiguration
-                .Enrich.WithBuildConfiguration()
-                .Enrich.WithServiceName(serviceName)
-                .Enrich.WithEnvironment()
-                .Enrich.FromLogContext();
         }
 
         public static LoggerConfiguration UseConsoleWriterSettings(

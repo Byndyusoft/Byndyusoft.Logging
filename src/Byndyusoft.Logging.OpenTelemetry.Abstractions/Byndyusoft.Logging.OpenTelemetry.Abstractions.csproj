@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Byndyusoft.Logging.OpenTelemetry.Abstractions</PackageId>
+    <RootNamespace>Byndyusoft.Logging</RootNamespace>
+    <PackageTags>Byndyusoft;Logging;Serilog;OpenTelemetry;Abstractions</PackageTags>
+    <Description>Abstractions for OpenTelemetry support for Byndyusoft.Logging library</Description>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+</Project>
