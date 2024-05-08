@@ -1,9 +1,10 @@
+using Byndyusoft.Logging.Builders;
+using Byndyusoft.Logging.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Byndyusoft.Logging.Configuration;
 using Serilog;
 
-namespace Byndyusoft.Logging.Sample
+namespace Byndyusoft.Logging
 {
     public class Program
     {
@@ -17,8 +18,8 @@ namespace Byndyusoft.Logging.Sample
                 .UseSerilog((context, configuration) => configuration
                     .UseOpenTelemetryTraces()
                     .UseFileWriterSettings()
-                    .UseDefaultSettings(context.Configuration, "Sample project")
-                    .WriteToOpenTelemetry()
+                    .UseDefaultSettings(context.Configuration)
+                    .WriteToOpenTelemetry(activityEventBuilder: StructuredActivityEventBuilder.Instance)
                 )
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }

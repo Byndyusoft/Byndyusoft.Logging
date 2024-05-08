@@ -35,13 +35,7 @@ logger.LogInformation("запрошены {@Values}", (object)values);
 		"Values": [
 			"value1",
 			"value2"
-		],
-    	"Build": {
-			"Commit": "b231ea7",
-			"Branch": "234-sample-project-logger"
-		},
-		"ServiceName": "Sample project",
-		"Environment": "Development"
+		]
 	}
 }
 ```
@@ -54,9 +48,6 @@ logger.LogInformation("запрошены {@Values}", (object)values);
 - `Level` — уровень лога
 - `Properties.*` — все остальные свойства сообщения
 - `Values` — параметры сообщения
-- `Build.*` — параметры извлечённые из переменных окружения `BUILD_BRANCH` и `BUILD_COMMIT`. Поддерживает любые названия по маске `BUILD_*`
-- `ServiceName` — название сервиса, задаётся в конфигурации
-- `Environment` — значение переменной окружения `ASPNETCORE_ENVIRONMENT`
 
 Кроме того `Properties.*` обогащается полями добавленными в контекст лога. Т.е. если вызывать `logger.LogInformation("запрошены {@Values}", (object)values)` из метода контроллера, то в `Properties` добавятся следующие поля, которые добавляет инфраструктура asp.net
 
@@ -151,10 +142,69 @@ logger.LogError(ex, "Должен совпасть хэш ошибки")
 
 ```
 return loggerConfiguration
-    .UseDefaultEnrichSettings(serviceName)
+    .Enrich.FromLogContext()
     .UseConsoleWriterSettings(restrictedToMinimumLevel)
     .OverrideDefaultLoggers()
     .ReadFrom.Configuration(configuration)
 ```
 
 Можно использовать только те его части, которые подходят вашему проекту.
+
+## Хочу положить в события трассировок только заданные мной параметры, а не весь лог (структурные события)
+
+Если использовать стандартный способ переноса логов в события трассы, то в них будут попадать само сообщение лога, его свойства и остальные дополнительные параметры, такие как уровень логирования и контекст логирования. В трассах выглядит следующим образом:
+
+![Not Structured Logs](/Not%20Structured.png?raw=true)
+
+Если требуется, чтобы в событиях трассы попадали только параметры без дублирования их в сообщении, то можно использовать структурные события. Они позволяют записать события в виде название события и его параметров.
+Пример:
+
+![Not Structured Logs](/Structured.png?raw=true)
+
+Чтобы заработали структурные события, нужно подключить `StructuredActivityEventBuilder`:
+
+```
+.UseSerilog((context, configuration) => configuration
+    .WriteToOpenTelemetry(activityEventBuilder: StructuredActivityEventBuilder.Instance)
+```
+
+После этого можно создавать структурные события с помощью логирования по конвенции или вспомогательного метода.
+
+### Логирование структурных событий по конвенции
+
+Для этого в логах должно быть свойство _TraceEventName_, которое будет использоваться как название события в трассе:
+
+```
+_logger.LogInformation("{TraceEventName} Parameters: Company.Name = {Company_Name}; Id = {Id}", "MethodInput", "Byndyusoft", 10);
+```
+
+В логи сообщение попадёт как обычно, а событие трассы будет содержать только два параметра: _Id_ и _Company.Name_. Имя события будет _MethodInput_. События будут выглядеть, как на картинке выше.
+
+### Логирование структурных событий через вспомогательный метод
+
+Чтобы явно указать на использование структурных событий, можно воспользоваться вспомогательным методом `LogStructuredActivityEvent`, который находится в пакете `Byndyusoft.Logging.OpenTelemetry.Abstractions`.
+
+[![Nuget](https://img.shields.io/nuget/v/Byndyusoft.Logging.OpenTelemetry.Abstractions.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry.Abstractions/) [![Downloads](https://img.shields.io/nuget/dt/Byndyusoft.Logging.OpenTelemetry.Abstractions.svg?style=flat)](https://www.nuget.org/packages/Byndyusoft.Logging.OpenTelemetry.Abstractions/)
+
+Чтобы создать событие трассировки, аналогичное картинке выше, нужно написать следующее:
+
+```
+var eventItems = new[]
+{
+    new StructuredActivityEventItem("Id", 10),
+    new StructuredActivityEventItem("Company.Name", "Byndyusoft")
+};
+_logger.LogStructuredActivityEvent("MethodInput", eventItems);
+```
+
+Пример выше полностью аналогичен коду логирования по конвенции:
+
+```
+_logger.LogInformation("Structured Event {TraceEventName} Properties: Id = {Id}; Company.Name = {Company_Name}; ", "MethodInput", 10, "Byndyusoft");
+```
+
+По умолчанию структурные события попадают в логи с уровнем _Information_.
+
+# Обогащение дополнительными полями
+
+Для обогащения информацией о параметрах окружения с наименованием BUILD_*, именем сервиса и версией сервиса можно воспользоваться библиотекой [Byndyusoft.Telemetry.Logging.Serilog](https://www.nuget.org/packages/Byndyusoft.Telemetry.Logging.Serilog). Документация - [тут](https://github.com/Byndyusoft/Byndyusoft.Telemetry/blob/master/README.md).

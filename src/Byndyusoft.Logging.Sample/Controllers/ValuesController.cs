@@ -1,21 +1,22 @@
 ﻿using System;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Byndyusoft.Logging.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Byndyusoft.Logging.Sample.Controllers
+namespace Byndyusoft.Logging.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private readonly ILogger<ValuesController> logger;
+        private readonly ILogger<ValuesController> _logger;
 
         public ValuesController(ILogger<ValuesController> logger)
         {
-            this.logger = logger;
+            this._logger = logger;
         }
 
         // GET: api/<ValuesController>
@@ -24,7 +25,19 @@ namespace Byndyusoft.Logging.Sample.Controllers
         {
             var values = new[] { "value1", "value2" };
 
-            logger.LogInformation("запрошены {@Values}", (object)values);
+            _logger.LogInformation("запрошены {@Values}", (object)values);
+            _logger.LogInformation("Scalar Values. Int - {Integer}, String - {String}", 10, "{\"Id\":11}");
+
+            _logger.LogInformation("{TraceEventName} Parameters: Company.Name = {Company_Name}; Id = {Id}",
+                "MethodInput", "Byndyusoft", 10);
+
+            var eventItems = new[]
+            {
+                new StructuredActivityEventItem("Id", 10),
+                new StructuredActivityEventItem("Company.Name", "Byndyusoft")
+            };
+            _logger.LogStructuredActivityEvent("MethodInput", eventItems, LogLevel.Warning);
+
             return values;
         }
 
@@ -38,14 +51,14 @@ namespace Byndyusoft.Logging.Sample.Controllers
             }
             catch (Exception e)
             {
-                logger.LogError(e, "Исключение с сообщением");
+                _logger.LogError(e, "Исключение с сообщением");
                 try
                 {
                     ThrowErrorWithInnerError();
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Должен совпасть хэш ошибки");
+                    _logger.LogError(ex, "Должен совпасть хэш ошибки");
                     throw;
                 }
             }
